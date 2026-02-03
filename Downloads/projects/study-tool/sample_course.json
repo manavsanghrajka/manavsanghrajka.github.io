@@ -1,0 +1,26 @@
+{
+  "title": "Calculus 101",
+  "description": "Comprehensive Calculus study guide with flashcards",
+  "units": [
+    {
+      "name": "Unit 1: Limits & Continuity",
+      "weight": 0.2,
+      "topics": [
+        {
+          "name": "Introduction to Limits",
+          "flashcards": [
+            { "front": "What is a Limit?", "back": "The value that a function approaches as the input approaches some value." },
+            { "front": "Symbol for Limit", "back": "lim x->c f(x)" }
+          ]
+        },
+        "Infinite Limits",
+        "Continuity Laws"
+      ]
+    },
+    {
+      "name": "Unit 2: Derivatives",
+      "weight": 0.3,
+      "topics": ["Power Rule", "Product Rule", "Chain Rule"]
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "scripts": {
+    "dev": "ts-node lib/server.ts",
+    "start": "ts-node lib/server.ts"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/jsonwebtoken": "^9.0.7",
+    "@types/uuid": "^10.0.0",
+    "dotenv-cli": "^11.0.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "@types/pdf-parse": "^1.1.5",
+    "@types/pg": "^8.16.0",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "next-auth": "^4.24.13",
+    "node-fetch": "^2.7.0",
+    "pdf-parse": "^2.4.5",
+    "pg": "^8.17.1",
+    "uuid": "^13.0.0"
+  }
+}
