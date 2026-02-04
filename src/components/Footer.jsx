@@ -22,7 +22,7 @@ const Footer = () => {
       </div>
 
       <p className="text-ink/50 text-xs tracking-terminal uppercase">
-        -------- © 2025 MANAV | BUILT WITH REACT + VITE --------
+        © 2025 MANAV | BUILT WITH REACT + VITE
       </p>
     </footer>
   );

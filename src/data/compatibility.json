@@ -1,0 +1,101 @@
+{
+  "sections": [
+    {
+      "id": "core",
+      "name": "Core Compatibility",
+      "questions": [
+        { "id": "core1", "text": "You are physically attracted to this person.", "value": 6 },
+        { "id": "core2", "text": "You respect them as a person.", "value": 6 },
+        { "id": "core3", "text": "You would be embarrassed if your friends met them.", "value": -8 },
+        { "id": "core4", "text": "This person does something you are morally against (e.g., cheating, lying, shoplifting).", "value": -12 },
+        { "id": "core5", "text": "You have survived a minor inconvenience together (e.g., flight delay, IKEA trip) without fighting.", "value": 5 },
+        { "id": "core6", "text": "This person has ever made you feel small on purpose.", "value": -10 },
+        { "id": "core7", "text": "You admire how this person spends their time.", "value": 4 },
+        { "id": "core8", "text": "You secretly resent how they spend their time.", "value": -5 },
+        { "id": "core9", "text": "You enjoy doing nothing together with this person.", "value": 5 },
+        { "id": "core10", "text": "You feel this person gets your sense of humor (you think they are funny/they think you are funny).", "value": 4 },
+        { "id": "core11", "text": "You would be okay being stuck in an airport with them for 10 hours.", "value": 6 }
+      ]
+    },
+    {
+      "id": "communication",
+      "name": "Communication and Conflict",
+      "questions": [
+        { "id": "comm1", "text": "They can admit when they are wrong about something.", "value": 7 },
+        { "id": "comm2", "text": "You can usually understand the other person's side in an argument.", "value": 4 },
+        { "id": "comm3", "text": "When you fight, it feels like a competition.", "value": -6 },
+        { "id": "comm4", "text": "When you fight, it feels like collaboration.", "value": 5 },
+        { "id": "comm5", "text": "This person talks over you when you are saying something or arguing.", "value": -5 },
+        { "id": "comm6", "text": "You feel you can disagree in a level-headed way.", "value": 4 },
+        { "id": "comm7", "text": "You walk away from arguments feeling dismissed.", "value": -6 },
+        { "id": "comm8", "text": "You can laugh about your disagreements afterwards.", "value": 3 },
+        { "id": "comm9", "text": "They can take feedback or criticism without turning it into an argument.", "value": 6 },
+        { "id": "comm10", "text": "You leave conversations feeling understood.", "value": 5 },
+        { "id": "comm11", "text": "They have shown they can apologize AND actually change their behavior (not just say sorry).", "value": 8 }
+      ]
+    },
+    {
+      "id": "emotional",
+      "name": "Emotional Security",
+      "questions": [
+        { "id": "emo1", "text": "You trust them even when they are out of sight.", "value": 6 },
+        { "id": "emo2", "text": "You check their online activity when you are anxious or don't know where they are.", "value": -5 },
+        { "id": "emo3", "text": "You've considered hiding your true feelings so as not to scare this person off.", "value": -7 },
+        { "id": "emo4", "text": "This person remembers small details/things you said days ago.", "value": 5 },
+        { "id": "emo5", "text": "This person shows interest in your world (friends, passions, hobbies).", "value": 4 },
+        { "id": "emo6", "text": "They avoid emotional topics or shut down when you discuss something serious.", "value": -6 },
+        { "id": "emo7", "text": "You feel emotionally seen by this person.", "value": 8 },
+        { "id": "emo8", "text": "You feel emotionally analyzed by this person.", "value": -3 },
+        { "id": "emo9", "text": "You feel like you can be vulnerable with this person.", "value": 5 },
+        { "id": "emo10", "text": "You've thought about hiding parts of your life so they won't judge you.", "value": -6 },
+        { "id": "emo11", "text": "You feel you don't need to prove your worth for them to like/respect you.", "value": 6 },
+        { "id": "emo12", "text": "This person shows up when it matters, not just when it's convenient.", "value": 7 },
+        { "id": "emo13", "text": "You feel like you are competing for their attention.", "value": -8 },
+        { "id": "emo14", "text": "You have felt calmer since dating/being with them.", "value": 6 },
+        { "id": "emo15", "text": "You have stopped doing self-destructive things since dating them.", "value": 9 },
+        { "id": "emo16", "text": "You have started doing self-destructive things since dating them.", "value": -12 },
+        { "id": "emo17", "text": "This person takes care of you when you are sick.", "value": 6 },
+        { "id": "emo18", "text": "You genuinely look forward to seeing this person.", "value": 7 },
+        { "id": "emo19", "text": "When something good happens, they are the first person you want to tell.", "value": 5 }
+      ]
+    },
+    {
+      "id": "life",
+      "name": "Life Trajectory",
+      "questions": [
+        { "id": "life1", "text": "You have directly opposing views on health and exercise.", "value": -9 },
+        { "id": "life2", "text": "You have directly opposing views on where to live.", "value": -10 },
+        { "id": "life3", "text": "You have directly opposing views on finances and career (e.g., saver vs. spender).", "value": -9 },
+        { "id": "life4", "text": "You have directly opposing life goals and dreams (e.g., stability vs. adventure).", "value": -11 },
+        { "id": "life5", "text": "Your day-to-day routines don't match up (e.g., tidy vs. messy, early bird vs. nocturnal).", "value": -8 },
+        { "id": "life6", "text": "You have directly opposing views on religion or spirituality.", "value": -10 },
+        { "id": "life7", "text": "You have directly opposing views on having kids.", "value": -12 },
+        { "id": "life8", "text": "You've imagined introducing them to your parents and felt dread.", "value": -8 },
+        { "id": "life9", "text": "Their lifestyle constantly drains your energy or money.", "value": -7 },
+        { "id": "life10", "text": "Your friends don't like this person.", "value": -3 },
+        { "id": "life11", "text": "You find yourself having to defend this person to family or friends.", "value": -7 },
+        { "id": "life12", "text": "You can picture yourself growing old with this person.", "value": 8 },
+        { "id": "life13", "text": "You can accept their flaws and are okay if they never change.", "value": 8 },
+        { "id": "life14", "text": "This person acts like your time is less valuable than theirs.", "value": -8 }
+      ]
+    },
+    {
+      "id": "chemistry",
+      "name": "Intangibles & Chemistry",
+      "questions": [
+        { "id": "chem1", "text": "This person makes you laugh in a way that no one else does.", "value": 5 }
+      ]
+    }
+  ],
+  "results": [
+    { "min": 180, "max": 999, "label": "EXTREMELY HEALTHY", "description": "You are likely with your soulmate. You feel safe, respected, and understood. No major unresolved issues." },
+    { "min": 120, "max": 179, "label": "HEALTHY / SOLID", "description": "You communicate well, are aligned on important things, and you like who you are with them." },
+    { "min": 60, "max": 119, "label": "PRETTY GOOD", "description": "Mostly positive but with some friction. Not perfect, but not unstable. Can be long-term if both put in effort." },
+    { "min": 1, "max": 59, "label": "NEUTRAL / UNCLEAR", "description": "Connection exists but there are noticeable issues. Could go either way depending on honesty and effort. Not thriving, but not immediate danger." },
+    { "min": -59, "max": 0, "label": "NOT GREAT", "description": "You are compromising more than you realize. Issues exist that will likely continue to bother you. Not a disaster yet, but not looking good." },
+    { "min": -149, "max": -60, "label": "PROBLEMATIC", "description": "Repeated patterns of resentment, mismatched values, or emotional instability. The relationship drains more than it gives." },
+    { "min": -249, "max": -150, "label": "BAD", "description": "You are likely unhappy but have normalized it. You are trying to make it work even though it doesn't meet your needs." },
+    { "min": -349, "max": -250, "label": "VERY BAD", "description": "Affecting your self-esteem, habits, and health. You may be staying out of fear or guilt, but you are not compatible long-term." },
+    { "min": -999, "max": -350, "label": "LEAVE IMMEDIATELY", "description": "Objectively harmful. Your needs and well-being are ignored. Unlikely to be fixable." }
+  ]
+}
