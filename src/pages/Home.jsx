@@ -13,7 +13,7 @@ const Home = () => {
 
       <Link to="/projects"
         className="bg-highlight text-invert px-8 py-4 font-semibold uppercase tracking-terminal hover:bg-invert hover:text-highlight border border-highlight transition-none">
-        [ EXPLORE PROJECTS -> ]
+        [ EXPLORE PROJECTS → ]
       </Link>
 
       <div className="mt-20 w-full max-w-md">

@@ -21,7 +21,7 @@ const Projects = () => {
                     Find out if they like you, or not
                   </p>
                   <span className="mt-4 text-sm font-semibold uppercase tracking-terminal text-ink group-hover:text-invert">
-                    [ START -> ]
+                    [ START → ]
                   </span>
                 </Link>
 
@@ -36,7 +36,7 @@ const Projects = () => {
                     Find out if you both are compatible
                   </p>
                   <span className="mt-4 text-sm font-semibold uppercase tracking-terminal text-ink group-hover:text-invert">
-                    [ START -> ]
+                    [ START → ]
                   </span>
                 </Link>
 
