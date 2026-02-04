@@ -12,28 +12,9 @@ const Home = () => {
       </p>
 
       <Link to="/projects"
-        className="bg-highlight text-invert px-8 py-4 font-semibold uppercase tracking-terminal hover:bg-invert hover:text-highlight border border-highlight transition-none">
+        className="bg-highlight text-invert px-8 py-4 font-semibold uppercase tracking-terminal hover:bg-ink hover:text-invert border border-highlight transition-none">
         [ EXPLORE PROJECTS → ]
       </Link>
-
-      <div className="mt-20 w-full max-w-md">
-         <h3 className="text-sm font-bold text-ink mb-6 tracking-terminal uppercase">
-           [ MY FAVOURITE SONG RIGHT NOW ]
-         </h3>
-         <div className="border border-structure p-4">
-           <iframe
-             style={{ borderRadius: '0px' }}
-             src="https://open.spotify.com/embed/track/4WiiRw2PHMNQE0ad6y6GdD?utm_source=generator"
-             width="100%"
-             height="152"
-             frameBorder="0"
-             allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-             loading="lazy"
-             title="Spotify Embed"
-           >
-           </iframe>
-         </div>
-      </div>
     </main>
   );
 };

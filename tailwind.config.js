@@ -10,10 +10,10 @@ export default {
         mono: ["JetBrains Mono", "IBM Plex Mono", "Space Mono", "monospace"],
       },
       colors: {
-        canvas: "#EEEEEE",
+        canvas: "#E0E0E0",
         ink: "#111111",
         structure: "#BBBBBB",
-        highlight: "#000000",
+        highlight: "#444444",
         invert: "#FFFFFF",
       },
       letterSpacing: {
