@@ -19,7 +19,7 @@ const TeamList = ({ teams, teamStats, teamYearStats = {}, scoutingData, eventKey
       setSortDir(prev => prev === 'asc' ? 'desc' : 'asc');
     } else {
       setSortBy(field);
-      setSortDir('asc');
+      setSortDir(field === 'epa' || field === 'opr' ? 'desc' : 'asc'); // Default high-to-low for EPA/OPR
     }
   };
 
@@ -47,6 +47,19 @@ const TeamList = ({ teams, teamStats, teamYearStats = {}, scoutingData, eventKey
   };
 
   const hasActiveFilters = shooterFilters.length > 0 || climbFilters.length > 0 || feedingFilter || trenchFilter;
+
+  // Helper to get EPA value from various data sources
+  const getEpaValue = (teamNumber) => {
+    // Event-specific stats
+    const eventStats = teamStats[teamNumber];
+    if (eventStats?.epa?.total) return eventStats.epa.total;
+    
+    // Year stats from Statbotics API
+    const yearStats = teamYearStats[teamNumber];
+    if (yearStats?.epa?.total_points?.mean) return yearStats.epa.total_points.mean;
+    
+    return 0;
+  };
 
   // Filter teams
   const filteredTeams = useMemo(() => {
@@ -87,8 +100,13 @@ const TeamList = ({ teams, teamStats, teamYearStats = {}, scoutingData, eventKey
           bVal = b.team_number;
           break;
         case 'epa':
-          aVal = teamStats[a.team_number]?.epa?.total || teamYearStats[a.team_number]?.epa?.total || 0;
-          bVal = teamStats[b.team_number]?.epa?.total || teamYearStats[b.team_number]?.epa?.total || 0;
+          aVal = getEpaValue(a.team_number);
+          bVal = getEpaValue(b.team_number);
+          break;
+        case 'opr':
+          // Use event OPR or fall back to 0
+          aVal = teamStats[a.team_number]?.opr || 0;
+          bVal = teamStats[b.team_number]?.opr || 0;
           break;
         case 'scouted':
           aVal = scoutingData[a.team_number] ? 1 : 0;
@@ -129,37 +147,54 @@ const TeamList = ({ teams, teamStats, teamYearStats = {}, scoutingData, eventKey
     </button>
   );
 
-  // Helper to get EPA/OPR display info
+  // Helper to get stats display info for a team
   const getStatsDisplay = (teamNumber) => {
     const eventStats = teamStats[teamNumber];
     const yearStats = teamYearStats[teamNumber];
 
-    // Priority: event EPA > year EPA > year rank
+    // Priority 1: Event EPA (if available)
     if (eventStats?.epa?.total) {
       return {
         epa: eventStats.epa.total,
         opr: eventStats.opr || null,
         label: 'EPA',
         year: null,
+        rank: null,
       };
     }
 
+    // Priority 2: Year stats from Statbotics
     if (yearStats) {
-      if (yearStats.hasCurrentYearData && yearStats.epa?.total) {
+      const epa = yearStats.epa?.total_points?.mean;
+      const rank = yearStats.epa?.ranks?.total?.rank;
+      const dataYear = yearStats.dataYear;
+      
+      if (dataYear === 2026 && epa) {
+        // Current year data
         return {
-          epa: yearStats.epa.total,
-          opr: yearStats.opr || null,
+          epa: epa,
+          opr: null,
           label: 'EPA',
           year: null,
+          rank: null,
         };
-      } else {
-        // Show rank from previous year
+      } else if (rank) {
+        // Previous year - show rank
         return {
-          epa: yearStats.epa?.total || null,
+          epa: epa,
           opr: null,
-          rank: yearStats.epa_rank || yearStats.rank,
-          label: `${yearStats.dataYear} RANK`,
-          year: yearStats.dataYear,
+          label: `${dataYear} RANK`,
+          year: dataYear,
+          rank: rank,
+        };
+      } else if (epa) {
+        // Has EPA but no rank
+        return {
+          epa: epa,
+          opr: null,
+          label: `${dataYear} EPA`,
+          year: dataYear,
+          rank: null,
         };
       }
     }
@@ -174,6 +209,7 @@ const TeamList = ({ teams, teamStats, teamYearStats = {}, scoutingData, eventKey
         <span className="text-xs uppercase tracking-terminal text-ink/70 py-1">SORT:</span>
         <SortButton field="number" label="TEAM #" />
         <SortButton field="epa" label="EPA" />
+        <SortButton field="opr" label="OPR" />
         <SortButton field="scouted" label="SCOUTED" />
       </div>
 
@@ -279,7 +315,7 @@ const TeamList = ({ teams, teamStats, teamYearStats = {}, scoutingData, eventKey
                       </span>
                     ) : statsDisplay.epa ? (
                       <span className="text-xs uppercase tracking-terminal bg-canvas group-hover:bg-highlight px-2 py-1 border border-structure group-hover:border-invert">
-                        EPA: {statsDisplay.epa.toFixed(1)}
+                        {statsDisplay.label}: {statsDisplay.epa.toFixed(1)}
                       </span>
                     ) : null}
                   </div>
@@ -291,10 +327,10 @@ const TeamList = ({ teams, teamStats, teamYearStats = {}, scoutingData, eventKey
               <div className="text-xs tracking-terminal text-ink/50 group-hover:text-invert/50 truncate mb-2">
                 {[team.city, team.state_prov, team.country].filter(Boolean).join(', ')}
               </div>
-              {/* OPR display if available */}
-              {statsDisplay?.opr && (
+              {/* OPR display if available from event stats */}
+              {teamStats[team.team_number]?.opr && (
                 <div className="text-xs tracking-terminal text-ink/50 group-hover:text-invert/50 mb-2">
-                  OPR: {statsDisplay.opr.toFixed(1)}
+                  OPR: {teamStats[team.team_number].opr.toFixed(1)}
                 </div>
               )}
               {scout ? (
