@@ -338,7 +338,7 @@ const TeamList = ({ teams, teamStats, teamYearStats = {}, scoutingData, eventKey
                         </span>
                         {statsDisplay.unitless && (
                           <span className="text-xs uppercase tracking-terminal text-ink/50 group-hover:text-invert/50">
-                            {statsDisplay.year} EPA: {statsDisplay.unitless.toFixed(0)}
+                            {statsDisplay.year} UNITLESS: {statsDisplay.unitless.toFixed(0)}
                           </span>
                         )}
                       </>
