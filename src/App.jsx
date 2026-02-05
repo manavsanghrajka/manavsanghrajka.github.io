@@ -6,6 +6,8 @@ import Projects from './pages/Projects';
 import Cv from './pages/Cv';
 import DoTheyLikeMe from './pages/DoTheyLikeMe';
 import AreYouCompatible from './pages/AreYouCompatible';
+import ScoutHome from './pages/scout4308/ScoutHome';
+import EventDashboard from './pages/scout4308/EventDashboard';
 
 function App() {
   return (
@@ -18,6 +20,8 @@ function App() {
           <Route path="/cv" element={<Cv />} />
           <Route path="/do-they-like-me" element={<DoTheyLikeMe />} />
           <Route path="/are-you-compatible" element={<AreYouCompatible />} />
+          <Route path="/scout4308" element={<ScoutHome />} />
+          <Route path="/scout4308/event/:eventKey" element={<EventDashboard />} />
         </Routes>
         <Footer />
       </div>
