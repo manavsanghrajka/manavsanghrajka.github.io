@@ -10,18 +10,18 @@ const Projects = () => {
             <section className="flex justify-center items-center w-full">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 max-w-3xl w-full">
 
-                <Link to="/do-they-like-me" className="group border border-structure p-8 hover:bg-ink hover:text-invert hover:border-ink transition-none flex flex-col items-start text-left">
+                <Link to="/scout4308" className="group border border-structure p-8 hover:bg-ink hover:text-invert hover:border-ink transition-none flex flex-col items-start text-left">
                   <span className="text-xs uppercase tracking-terminal text-ink/50 group-hover:text-invert/50 mb-2">
-                    [ QUIZ ]
+                    [ FRC TOOL ]
                   </span>
                   <h3 className="text-lg font-bold uppercase tracking-terminal mb-3 text-ink group-hover:text-invert">
-                    Do They Like Me?
+                    Scout4308
                   </h3>
                   <p className="text-sm text-ink/70 group-hover:text-invert/70 leading-relaxed">
-                    Find out if they like you, or not
+                    FRC Team 4308 scouting system with TBA + Statbotics integration
                   </p>
                   <span className="mt-4 text-sm font-semibold uppercase tracking-terminal text-ink group-hover:text-invert">
-                    [ START → ]
+                    [ OPEN → ]
                   </span>
                 </Link>
 
@@ -40,18 +40,18 @@ const Projects = () => {
                   </span>
                 </Link>
 
-                <Link to="/scout4308" className="group border border-structure p-8 hover:bg-ink hover:text-invert hover:border-ink transition-none flex flex-col items-start text-left">
+                <Link to="/do-they-like-me" className="group border border-structure p-8 hover:bg-ink hover:text-invert hover:border-ink transition-none flex flex-col items-start text-left">
                   <span className="text-xs uppercase tracking-terminal text-ink/50 group-hover:text-invert/50 mb-2">
-                    [ FRC TOOL ]
+                    [ QUIZ ]
                   </span>
                   <h3 className="text-lg font-bold uppercase tracking-terminal mb-3 text-ink group-hover:text-invert">
-                    Scout4308
+                    Do They Like Me?
                   </h3>
                   <p className="text-sm text-ink/70 group-hover:text-invert/70 leading-relaxed">
-                    FRC Team 4308 scouting system with TBA + Statbotics integration
+                    Find out if they like you, or not
                   </p>
                   <span className="mt-4 text-sm font-semibold uppercase tracking-terminal text-ink group-hover:text-invert">
-                    [ OPEN → ]
+                    [ START → ]
                   </span>
                 </Link>
 
