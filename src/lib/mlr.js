@@ -18,34 +18,28 @@ function calculateSMA(data, period) {
 }
 
 /**
- * Calculate Relative Strength Index (RSI)
+ * Calculate Volatility (Standard Deviation of Returns)
  */
-function calculateRSI(prices, period = 14) {
+function calculateVolatility(prices, period = 20) {
   const result = [];
-  const gains = [];
-  const losses = [];
   
-  for (let i = 1; i < prices.length; i++) {
-    const change = prices[i] - prices[i - 1];
-    gains.push(change > 0 ? change : 0);
-    losses.push(change < 0 ? Math.abs(change) : 0);
-  }
-  
-  result.push(null); // First value has no RSI
-  
-  for (let i = 0; i < gains.length; i++) {
-    if (i < period - 1) {
+  for (let i = 0; i < prices.length; i++) {
+    if (i < period) {
       result.push(null);
     } else {
-      const avgGain = gains.slice(i - period + 1, i + 1).reduce((a, b) => a + b, 0) / period;
-      const avgLoss = losses.slice(i - period + 1, i + 1).reduce((a, b) => a + b, 0) / period;
-      
-      if (avgLoss === 0) {
-        result.push(100);
-      } else {
-        const rs = avgGain / avgLoss;
-        result.push(100 - (100 / (1 + rs)));
+      // Calculate daily returns for the period
+      const returns = [];
+      for (let j = i - period + 1; j <= i; j++) {
+        const dailyReturn = (prices[j] - prices[j - 1]) / prices[j - 1];
+        returns.push(dailyReturn);
       }
+      
+      // Calculate standard deviation
+      const mean = returns.reduce((a, b) => a + b, 0) / returns.length;
+      const variance = returns.reduce((a, b) => a + Math.pow(b - mean, 2), 0) / returns.length;
+      const stdDev = Math.sqrt(variance);
+      
+      result.push(stdDev);
     }
   }
   
@@ -53,94 +47,85 @@ function calculateRSI(prices, period = 14) {
 }
 
 /**
- * Calculate Average True Range (ATR)
- */
-function calculateATR(high, low, close, period = 14) {
-  const trueRanges = [];
-  
-  for (let i = 0; i < high.length; i++) {
-    if (i === 0) {
-      trueRanges.push(high[i] - low[i]);
-    } else {
-      const tr = Math.max(
-        high[i] - low[i],
-        Math.abs(high[i] - close[i - 1]),
-        Math.abs(low[i] - close[i - 1])
-      );
-      trueRanges.push(tr);
-    }
-  }
-  
-  return calculateSMA(trueRanges, period);
-}
-
-/**
  * Prepare features from historical data
  */
 export function engineerFeatures(history, macroData = {}) {
   const closes = history.map(d => d.close);
-  const highs = history.map(d => d.high);
-  const lows = history.map(d => d.low);
   const volumes = history.map(d => d.volume);
   
   // Calculate technical indicators
   const sma20 = calculateSMA(closes, 20);
-  const sma50 = calculateSMA(closes, 50);
-  const rsi = calculateRSI(closes, 14);
-  const atr = calculateATR(highs, lows, closes, 14);
+  const volatility = calculateVolatility(closes, 20);
   const volumeSMA = calculateSMA(volumes, 20);
   
-  // Build feature matrix
-  const features = [];
-  const targets = [];
-  const validIndices = [];
+  // Build feature matrix with all required features
+  const processedData = [];
   
-  // Start from index 50 to ensure all indicators are available
-  for (let i = 50; i < history.length; i++) {
-    if (sma20[i] == null || sma50[i] == null || rsi[i] == null || atr[i] == null) {
+  // Start from index 20 to ensure all indicators are available
+  for (let i = 20; i < history.length; i++) {
+    if (sma20[i] == null || volatility[i] == null) {
       continue;
     }
     
-    const feature = [
-      closes[i - 1],                          // Previous close (lag 1)
-      sma20[i],                               // 20-day SMA
-      sma50[i],                               // 50-day SMA
-      rsi[i],                                 // RSI
-      atr[i],                                 // ATR
-      volumes[i] / (volumeSMA[i] || 1),       // Volume ratio
-      macroData.fedFundsRate || 4.5,          // Fed Funds Rate
-      macroData.cpi || 300,                   // CPI
-    ];
-    
-    features.push(feature);
-    targets.push([closes[i]]);
-    validIndices.push(i);
+    processedData.push({
+      index: i,
+      close: closes[i],
+      volume: volumes[i] / (volumeSMA[i] || 1),  // Normalized volume
+      sma_20: sma20[i],
+      volatility: volatility[i],
+      fed_funds: macroData.fedFundsRate || 4.5,
+      cpi: macroData.cpi || 300,
+    });
   }
   
-  return { features, targets, validIndices };
+  return processedData;
 }
 
 /**
  * Train MLR model and make prediction
+ * The model is trained to predict the price 'daysAhead' into the future
  */
 export function trainAndPredict(history, macroData, daysAhead = 1) {
-  const { features, targets, validIndices } = engineerFeatures(history, macroData);
+  const processedData = engineerFeatures(history, macroData);
   
-  if (features.length < 30) {
-    throw new Error('Insufficient data for training (need at least 30 valid data points)');
+  if (processedData.length < 50) {
+    throw new Error('Insufficient data for training (need at least 50 valid data points)');
   }
   
-  // Split data: 80% train, 20% test
-  const splitIndex = Math.floor(features.length * 0.8);
-  const trainX = features.slice(0, splitIndex);
-  const trainY = targets.slice(0, splitIndex);
-  const testX = features.slice(splitIndex);
-  const testY = targets.slice(splitIndex);
+  // 1. Prepare Features (X) and Target (y)
+  // We train the model to predict the price 'daysAhead' into the future
+  const X = [];
+  const y = [];
   
-  // Train the model
+  for (let i = 0; i < processedData.length - daysAhead; i++) {
+    const row = processedData[i];
+    X.push([
+      row.close,
+      row.volume,
+      row.sma_20,
+      row.volatility,
+      row.fed_funds,
+      row.cpi
+    ]);
+    // Target is the price 'daysAhead' from this data point
+    y.push([processedData[i + daysAhead].close]);
+  }
+  
+  if (X.length < 30) {
+    throw new Error('Insufficient training data after preparing for horizon');
+  }
+  
+  // 2. Split data: 80% train, 20% test
+  const splitIndex = Math.floor(X.length * 0.8);
+  const trainX = X.slice(0, splitIndex);
+  const trainY = y.slice(0, splitIndex);
+  const testX = X.slice(splitIndex);
+  const testY = y.slice(splitIndex);
+  
+  // 3. Train the Multiple Linear Regression Model
   const model = new MLR(trainX, trainY);
   
-  // Calculate metrics on test set
+  // 4. Calculate metrics on test set
   let sumSquaredError = 0;
   let sumAbsoluteError = 0;
   let sumSquaredTotal = 0;
@@ -157,46 +142,30 @@ export function trainAndPredict(history, macroData, daysAhead = 1) {
   const rSquared = 1 - (sumSquaredError / sumSquaredTotal);
   const mae = sumAbsoluteError / testY.length;
   
-  // Get current price
-  const currentPrice = history[history.length - 1].close;
+  // 5. Prepare the latest features for prediction
+  const latest = processedData[processedData.length - 1];
+  const latestFeatures = [
+    latest.close,
+    latest.volume,
+    latest.sma_20,
+    latest.volatility,
+    latest.fed_funds,
+    latest.cpi
+  ];
   
-  // Make prediction using latest data
-  const latestFeatures = features[features.length - 1];
-  let nextDayPrediction = model.predict(latestFeatures)[0];
+  // 6. Generate Prediction
+  let prediction = model.predict(latestFeatures)[0];
   
-  // Calculate the model's predicted daily change as a percentage
-  const modelDailyChangePercent = (nextDayPrediction - currentPrice) / currentPrice;
+  // 7. Dynamic Clamping (2-Sigma Rule)
+  // Uses actual market volatility instead of static bounds
+  const currentPrice = latest.close;
+  const stdDev = latest.volatility;  // Daily standard deviation of returns
+  const priceVolatility = currentPrice * stdDev * Math.sqrt(daysAhead);
   
-  // For multi-day predictions, use compound percentage change with heavy dampening
-  // The model predicts next-day, so we extrapolate cautiously
-  let prediction;
-  if (daysAhead <= 1) {
-    prediction = nextDayPrediction;
-  } else {
-    // Use historical volatility to inform prediction range
-    const recentPrices = history.slice(-60).map(h => h.close);
-    const avgPrice = recentPrices.reduce((a, b) => a + b, 0) / recentPrices.length;
-    
-    // Calculate historical daily returns
-    const returns = [];
-    for (let i = 1; i < recentPrices.length; i++) {
-      returns.push((recentPrices[i] - recentPrices[i-1]) / recentPrices[i-1]);
-    }
-    const avgDailyReturn = returns.reduce((a, b) => a + b, 0) / returns.length;
-    
-    // Dampen the effect significantly for longer time horizons
-    // Use mean reversion: blend model prediction with average price
-    const dampingFactor = Math.max(0.1, 1 / Math.sqrt(daysAhead));
-    
-    // Project forward using dampened daily return
-    const dampenedReturn = avgDailyReturn * dampingFactor;
-    prediction = currentPrice * Math.pow(1 + dampenedReturn, daysAhead);
-    
-    // Ensure prediction stays within reasonable bounds (±30% of current price)
-    const upperBound = currentPrice * 1.30;
-    const lowerBound = currentPrice * 0.70;
-    prediction = Math.max(lowerBound, Math.min(upperBound, prediction));
-  }
+  const lowerBound = currentPrice - (2 * priceVolatility);
+  const upperBound = currentPrice + (2 * priceVolatility);
+  
+  prediction = Math.max(lowerBound, Math.min(prediction, upperBound));
   
   return {
     predictedPrice: prediction,
@@ -204,6 +173,8 @@ export function trainAndPredict(history, macroData, daysAhead = 1) {
     mae,
     trainingSize: trainX.length,
     testSize: testX.length,
+    volatility: stdDev,
+    bounds: { lower: lowerBound, upper: upperBound },
     coefficients: model.weights,
   };
 }
