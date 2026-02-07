@@ -3,7 +3,7 @@
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-import { MultivariateLinearRegression as MLR } from "https://esm.sh/ml-regression@5.3.0";
+import MLR from "https://esm.sh/ml-regression-multivariate-linear@2.0.4";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
