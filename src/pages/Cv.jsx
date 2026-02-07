@@ -99,7 +99,7 @@ const Cv = () => {
                             </div>
                         </Item>
 
-                        <Item title="The Woodlands HOSA Chapter" period="2025/2026">
+                        <Item title="The Woodlands HOSA Chapter" period="2025 - Present">
                             <BulletList items={["Medical Spelling"]} />
                         </Item>
 
@@ -123,7 +123,7 @@ const Cv = () => {
                         </Item>
 
                         <div className="text-xs text-ink/70 space-y-1 mb-4 pl-4">
-                            <p>• The Woodlands Cross Country Team (2025 - present)</p>
+                            <p>• The Woodlands Cross Country Team (2025/2026)</p>
                             <p>• Member of Archery Club (2023/2024)</p>
                         </div>
                     </SubSection>
@@ -132,7 +132,7 @@ const Cv = () => {
                         <div className="text-xs text-ink/70 space-y-1 pl-4">
                             <p>• Toronto Model UN - Outreach Team</p>
                             <p>• International Space Station Design Competition Runners Up - Dougeldyne Aerospace, Team Canada/Great Lakes</p>
-                            <p className="pl-4">- Dougeldyne Aerospace - Good Samaritan Award</p>
+                            <p className="pl-4">- Good Samaritan Award</p>
                             <p>• SHAD Summer Program - University of Calgary 2025</p>
                             <p>• SHAD Ambassador</p>
                             <p>• Youreka Canada Highschool Student Investigator (2025)</p>
