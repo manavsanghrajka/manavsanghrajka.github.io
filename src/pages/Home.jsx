@@ -8,7 +8,7 @@ const Home = () => {
       </h1>
 
       <p className="text-sm md:text-base text-ink/70 max-w-2xl mb-10 leading-relaxed">
-        I'm a student who likes making random things
+        I like making random things
       </p>
 
       <Link to="/projects"
