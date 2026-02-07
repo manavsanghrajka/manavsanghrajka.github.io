@@ -1,8 +1,12 @@
 // Stock API module - fetches data from Yahoo Finance and FRED
 const FRED_API_KEY = import.meta.env.VITE_FRED_API_KEY;
 
-// Yahoo Finance uses a CORS proxy for browser requests
-const YAHOO_CORS_PROXY = 'https://corsproxy.io/?';
+// Multiple CORS proxies for fallback
+const CORS_PROXIES = [
+  (url) => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
+  (url) => `https://corsproxy.io/?${encodeURIComponent(url)}`,
+  (url) => `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`,
+];
 
 /**
  * Format ticker for the correct market
@@ -13,6 +17,26 @@ export function formatTicker(ticker, market) {
     return cleanTicker.endsWith('.TO') ? cleanTicker : `${cleanTicker}.TO`;
   }
   return cleanTicker;
+}
+
+/**
+ * Fetch with CORS proxy fallback
+ */
+async function fetchWithProxy(url) {
+  for (const proxyFn of CORS_PROXIES) {
+    try {
+      const proxyUrl = proxyFn(url);
+      const response = await fetch(proxyUrl);
+      
+      if (response.ok) {
+        return response;
+      }
+    } catch (e) {
+      console.log('Proxy failed, trying next...', e);
+      continue;
+    }
+  }
+  throw new Error('All CORS proxies failed. Please try again later.');
 }
 
 /**
@@ -28,12 +52,7 @@ export async function fetchStockData(ticker, market, period = '2y') {
   const url = `https://query1.finance.yahoo.com/v8/finance/chart/${formattedTicker}?period1=${startDate}&period2=${endDate}&interval=1d`;
   
   try {
-    const response = await fetch(YAHOO_CORS_PROXY + encodeURIComponent(url));
-    
-    if (!response.ok) {
-      throw new Error(`Failed to fetch stock data: ${response.status}`);
-    }
-    
+    const response = await fetchWithProxy(url);
     const data = await response.json();
     const result = data.chart?.result?.[0];
     
@@ -106,7 +125,7 @@ export async function fetchCompanyInfo(ticker, market) {
   
   try {
     const url = `https://query1.finance.yahoo.com/v7/finance/quote?symbols=${formattedTicker}`;
-    const response = await fetch(YAHOO_CORS_PROXY + encodeURIComponent(url));
+    const response = await fetchWithProxy(url);
     const data = await response.json();
     const quote = data.quoteResponse?.result?.[0];
     
