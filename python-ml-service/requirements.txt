@@ -6,3 +6,4 @@ numpy
 psycopg2-binary
 yfinance
 supabase
+pandas-ta

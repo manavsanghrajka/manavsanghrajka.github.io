@@ -15,7 +15,7 @@ export function formatTicker(ticker, market) {
 /**
  * Call the Supabase Edge Function to get stock prediction
  */
-export async function predictStock(ticker, market, targetDate) {
+export async function predictStock(ticker, market) {
   const response = await fetch(`${SUPABASE_URL}/functions/v1/predict-stock`, {
     method: 'POST',
     headers: {
@@ -24,8 +24,7 @@ export async function predictStock(ticker, market, targetDate) {
     },
     body: JSON.stringify({
       ticker,
-      market,
-      target_date: targetDate,
+      market
     }),
   });
   

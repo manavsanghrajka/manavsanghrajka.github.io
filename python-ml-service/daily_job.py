@@ -3,14 +3,15 @@ import time
 import pandas as pd
 import numpy as np
 import yfinance as yf
+import pandas_ta as ta
 from supabase import create_client, Client
 from datetime import datetime, timedelta
 import logging
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LassoCV
 
-# Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-# Supabase Setup
 url: str = os.environ.get("SUPABASE_URL")
 key: str = os.environ.get("SUPABASE_SERVICE_KEY")
 
@@ -19,35 +20,25 @@ if not url or not key:
 
 supabase: Client = create_client(url, key)
 
-# Constants
-TABLE_NAME = "predictions"
-BATCH_DELAY = 12 # seconds, to stay under 5 calls/min limit of free Polygon tier if used, though we use yfinance here which is more lenient but good to be safe/polite
-# Actually yfinance uses Yahoo API which has rate limits too. 12s is very safe.
+TABLE_PREDICTIONS = "predictions"
+TABLE_WEIGHTS = "model_weights"
 
-def get_sp500_tickers():
-    """Fetch S&P 500 tickers from Wikipedia."""
-    try:
-        table = pd.read_html('https://en.wikipedia.org/wiki/List_of_S%26P_500_companies')
-        df = table[0]
-        tickers = df['Symbol'].tolist()
-        # Clean tickers (replace . with - for yahoo, e.g. BF.B -> BF-B)
-        tickers = [t.replace('.', '-') for t in tickers]
-        logging.info(f"Fetched {len(tickers)} tickers from Wikipedia.")
-        return tickers
-    except Exception as e:
-        logging.error(f"Error fetching tickers: {e}")
-        # Fallback to a small list for testing if wiki fails
-        return ['AAPL', 'MSFT', 'GOOGL', 'AMZN', 'NVDA']
+# Top 50 S&P 500 companies by market cap
+TOP_50_TICKERS = [
+    'AAPL', 'MSFT', 'NVDA', 'GOOGL', 'AMZN', 'META', 'BRK-B', 'LLY', 'AVGO', 'V',
+    'JPM', 'TSLA', 'WMT', 'UNH', 'MA', 'PG', 'JNJ', 'XOM', 'HD', 'MRK',
+    'COST', 'ABBV', 'ORCL', 'CVX', 'CRM', 'AMD', 'BAC', 'PEP', 'KO', 'NFLX',
+    'TMO', 'WFC', 'ADBE', 'LIN', 'DIS', 'MCD', 'ABT', 'CSCO', 'INTC', 'CMCSA',
+    'IBM', 'QCOM', 'CAT', 'DHR', 'PFE', 'AMAT', 'NOW', 'GE', 'TXN', 'AXP'
+]
 
 def fetch_history(ticker):
-    """Fetch last ~100 days of data for a ticker."""
+    """Fetch last 2 years of data for a ticker to compute features and train."""
     try:
-        # Fetch 6 months to be safe for 20-day MA and lags
-        hist = yf.download(ticker, period="6mo", interval="1d", progress=False)
+        hist = yf.download(ticker, period="2y", interval="1d", progress=False)
         if hist.empty:
             return None
         
-        # Flatten MultiIndex columns if present (yfinance update)
         if isinstance(hist.columns, pd.MultiIndex):
             hist.columns = hist.columns.get_level_values(0)
             
@@ -59,170 +50,205 @@ def fetch_history(ticker):
             "Low": "low"
         })
         
-        # Ensure index is datetime
-        hist.index = pd.to_datetime(hist.index)
+        hist.index = pd.to_datetime(hist.index).tz_localize(None)
         return hist
     except Exception as e:
         logging.error(f"Error fetching data for {ticker}: {e}")
         return None
 
 def compute_features(df):
-    """Compute features needed for the model."""
+    """Compute features using pandas-ta."""
     df = df.copy()
     
-    # 1. Technical Indicators
-    # SMA 20
-    df['sma_20'] = df['close'].rolling(window=20).mean()
+    # Technical Indicators
+    df['rsi_14'] = df.ta.rsi(length=14)
+    df['sma_20'] = df.ta.sma(length=20)
+    df['sma_50'] = df.ta.sma(length=50)
     
-    # Volatility (20-day std dev of log returns)
+    macd = df.ta.macd()
+    if macd is not None and not macd.empty:
+        df['macd'] = macd.iloc[:, 0]
+        df['macd_hist'] = macd.iloc[:, 1]
+        df['macd_signal'] = macd.iloc[:, 2]
+    
+    bbands = df.ta.bbands()
+    if bbands is not None and not bbands.empty:
+        df['bb_lower'] = bbands.iloc[:, 0]
+        df['bb_mid'] = bbands.iloc[:, 1]
+        df['bb_upper'] = bbands.iloc[:, 2]
+        df['bb_bandwidth'] = bbands.iloc[:, 3]
+    
+    df['atr_14'] = df.ta.atr(length=14)
+    
+    # Returns and volatility
     df['log_ret'] = np.log(df['close'] / df['close'].shift(1))
-    df['volatility'] = df['log_ret'].rolling(window=20).std()
+    df['volatility_20'] = df['log_ret'].rolling(window=20).std()
     
-    # Momentum (Lagged Returns)
-    df['ret_1d'] = df['log_ret'] # Current day's return is the input for "1D Momentum"
+    df['ret_1d'] = df['log_ret']
     df['ret_5d'] = df['log_ret'].rolling(window=5).sum()
     df['ret_10d'] = df['log_ret'].rolling(window=10).sum()
     df['ret_20d'] = df['log_ret'].rolling(window=20).sum()
     
-    # Macro data (Fed Funds, CPI) - Fetching this daily is hard without API.
-    # For now, we will use static/placeholder values or fetch from FRED if key exists.
-    # To keep it robust for this batch job, we'll use recent values.
-    # In a real prod env, we'd fetch these.
-    # FEATURE HACK: Use fixed recent values to avoid FRED API dependency failure
-    df['fed_funds'] = 5.33 
-    df['cpi'] = 308.0
-
     return df
 
-def predict_next_day(ticker, df):
-    """
-    Predict the log return for the NEXT day.
-    Uses the coefficients from main.py (hardcoded or loaded).
-    For simplicity/robustness in this script, we'll use the coefficients we derived/know.
-    Ideally, this script imports the trained model.
-    """
-    # Load model?
-    # Importing 'main' might trigger FastAPI app run.
-    # We should extract the model training logic or save the model.
-    # For now, let's TRAIN the model on the fly for each stock? 
-    # No, that's too slow and fits on single stock data (overfitting).
-    
-    # We need the "Global" model.
-    # Since we don't have a model registry, we'll use the Strategy:
-    # "Train on the fly on the specific stock data?"
-    # No, the main.py trains on the data passed in the request.
-    # The main.py logic is: User sends data -> Train -> Predict.
-    # So yes, we TRAIN on the specific stock's history!
-    # Our API is designed to be "Train-and-Predict".
-    
-    # So we should call our own API?
-    # Or replicate the logic here.
-    # Replicating logic is safer for a batch job (no network dependency on own API).
-    
-    # Logic from main.py:
-    # 1. Train/Test split (80/20)
-    # 2. Standardize
-    # 3. RidgeCV
-    # 4. Predict
-    
-    from sklearn.preprocessing import StandardScaler
-    from sklearn.linear_model import RidgeCV
-    
-    # Prepare Data
-    # Target: Log return next day
-    # Features: lags, volume, volatility...
-    
-    df['target'] = np.log(df['close'].shift(-1) / df['close']) # 1 day ahead target
-    
-    features = ['ret_1d', 'ret_5d', 'ret_10d', 'ret_20d', 'volume', 'volatility', 'fed_funds', 'cpi']
-    
-    data = df.dropna().copy()
-    
-    if len(data) < 50:
-        return None
+def run_evaluation():
+    """Phase 1: Evaluate yesterday's predictions"""
+    try:
+        today_str = datetime.now().strftime('%Y-%m-%d')
+        logging.info(f"Phase 1: Evaluating predictions for {today_str}...")
         
-    X = data[features].values
-    y = data['target'].values
-    
-    # We want to predict for "Tomorrow".
-    # So we train on all available history (up to today-1 target).
-    # The last row of 'df' has features for 'Today', but target is NaN (Tomorrow unknown).
-    
-    # Training Data: All rows where we have target
-    X_train = X
-    y_train = y
-    
-    # Prediction Input: The very last row (Today)
-    # Re-compute features for the last row (which might have been dropped due to NaN target)
-    last_row = df.iloc[-1]
-    # Check if last_row has valid features (it should, as lags look back)
-    # Only target is missing.
-    if np.isnan(last_row['ret_20d']):
-         return None
-         
-    current_features = last_row[features].values.reshape(1, -1)
-    
-    # Train
-    scaler = StandardScaler()
-    X_scaled = scaler.fit_transform(X_train)
-    
-    model = RidgeCV(alphas=[0.1, 1.0, 10.0])
-    model.fit(X_scaled, y_train)
-    
-    # Predict
-    curr_scaled = scaler.transform(current_features)
-    pred_log_ret = model.predict(curr_scaled)[0]
-    
-    return pred_log_ret
+        res = supabase.table(TABLE_PREDICTIONS).select("*").eq("predicted_date", today_str).is_("actual_log_return", "null").execute()
+        
+        if not res.data:
+            logging.info("No unevaluated predictions for today.")
+            return
 
-def run():
-    tickers = get_sp500_tickers()
-    logging.info(f"Starting batch prediction for {len(tickers)} stocks...")
+        evaluated_count = 0
+        for row in res.data:
+            ticker = row['ticker']
+            pred_id = row['id']
+            pred_direction = row['predicted_direction']
+
+            hist = fetch_history(ticker)
+            if hist is None or len(hist) < 2:
+                continue
+                
+            today_data = hist.loc[hist.index <= today_str]
+            if len(today_data) < 2:
+                continue
+            
+            latest = today_data.iloc[-1]
+            prev = today_data.iloc[-2]
+            
+            actual_log_return = np.log(float(latest['close']) / float(prev['close']))
+            actual_direction = 1 if actual_log_return > 0 else -1
+            is_correct = (pred_direction == actual_direction)
+
+            supabase.table(TABLE_PREDICTIONS).update({
+                "actual_log_return": actual_log_return,
+                "actual_direction": actual_direction,
+                "is_correct": is_correct
+            }).eq("id", pred_id).execute()
+            
+            evaluated_count += 1
+            
+        logging.info(f"Evaluated {evaluated_count} predictions for {today_str}.")
+    except Exception as e:
+        logging.error(f"Error in phase 1 evaluation: {e}")
+
+def run_training_and_prediction():
+    """Phase 2 & 3: Train Global Model and Predict for Tomorrow"""
+    logging.info("Phase 2 & 3: Training Global Model & Making Predictions...")
+    today_str = datetime.now().strftime('%Y-%m-%d')
+    next_day_str = (datetime.now() + timedelta(days=1)).strftime('%Y-%m-%d')
+
+    all_data = []
+    current_features_dict = {}
+
+    features = [
+        'rsi_14', 'sma_20', 'sma_50', 'macd', 'macd_hist', 'macd_signal',
+        'bb_lower', 'bb_mid', 'bb_upper', 'bb_bandwidth', 'atr_14',
+        'volatility_20', 'ret_1d', 'ret_5d', 'ret_10d', 'ret_20d', 'volume'
+    ]
     
-    today = datetime.now().strftime('%Y-%m-%d')
-    predictions_made = 0
+    # Gather Data
+    for ticker in TOP_50_TICKERS:
+        df = fetch_history(ticker)
+        if df is None or len(df) < 100:
+            continue
+            
+        df = compute_features(df)
+        df['target'] = np.log(df['close'].shift(-1) / df['close']) # Next day return
+        
+        current_row = df.iloc[-1].copy()
+        current_features_dict[ticker] = current_row
+        
+        train_df = df.dropna(subset=features + ['target']).copy()
+        all_data.append(train_df)
+        
+        time.sleep(1) # Be polite to Yahoo Finance
+
+    if not all_data:
+        logging.error("No data gathered for training.")
+        return
+
+    combined_df = pd.concat(all_data)
     
-    for ticker in tickers:
+    X = combined_df[features].values
+    y = combined_df['target'].values
+    
+    # Train Global Model
+    scaler = StandardScaler()
+    X_scaled = scaler.fit_transform(X)
+    
+    logging.info(f"Training LassoCV on {len(X_scaled)} combined samples...")
+    model = LassoCV(cv=5, random_state=42, max_iter=10000)
+    model.fit(X_scaled, y)
+    
+    # Save Weights to Supabase
+    coefficients = model.coef_
+    intercept = model.intercept_
+    
+    logging.info(f"Global Model Intercept: {intercept}")
+    for f, c in zip(features, coefficients):
+        if abs(c) > 1e-6:
+            logging.info(f"Selected Feature {f}: {c}")
+            data = {
+                "created_date": today_str,
+                "model_type": "lasso_global",
+                "variable_name": f,
+                "weight": float(c)
+            }
+            try:
+                supabase.table(TABLE_WEIGHTS).upsert(data, on_conflict="created_date,model_type,variable_name").execute()
+            except Exception as e:
+                logging.error(f"Error saving weight: {e}")
+
+    # Save scaling params
+    for i, f in enumerate(features):
         try:
-            # Rate Limit
-            time.sleep(BATCH_DELAY)
+            supabase.table(TABLE_WEIGHTS).upsert({"created_date": today_str, "model_type": "lasso_global_mean", "variable_name": f, "weight": float(scaler.mean_[i])}, on_conflict="created_date,model_type,variable_name").execute()
+            supabase.table(TABLE_WEIGHTS).upsert({"created_date": today_str, "model_type": "lasso_global_scale", "variable_name": f, "weight": float(scaler.scale_[i])}, on_conflict="created_date,model_type,variable_name").execute()
+        except: pass
             
-            # Fetch
-            df = fetch_history(ticker)
-            if df is None:
+    try:
+        supabase.table(TABLE_WEIGHTS).upsert({"created_date": today_str, "model_type": "lasso_global", "variable_name": "INTERCEPT", "weight": float(intercept)}, on_conflict="created_date,model_type,variable_name").execute()
+    except: pass
+
+    # Predict Next Day
+    preds_made = 0
+    for ticker, current_row in current_features_dict.items():
+        try:
+            # Check for NaNs
+            curr_vals = current_row[features].values.astype(float)
+            if np.isnan(curr_vals).any():
                 continue
                 
-            # Process
-            df = compute_features(df)
+            curr_X = curr_vals.reshape(1, -1)
+            curr_X_scaled = scaler.transform(curr_X)
             
-            # Predict
-            pred_log_ret = predict_next_day(ticker, df)
-            if pred_log_ret is None:
-                continue
-                
-            # Store
-            # Predicted Direction: +1 if > 0, -1 if < 0
+            pred_log_ret = model.predict(curr_X_scaled)[0]
             direction = 1 if pred_log_ret > 0 else -1
             
             data = {
                 "ticker": ticker,
-                "predicted_date": (datetime.now() + timedelta(days=1)).strftime('%Y-%m-%d'), # Next day
-                # Actually, if we run after market close, we confirm the close of TODAY.
-                # And we predict for TOMORROW.
+                "predicted_date": next_day_str,
                 "predicted_log_return": float(pred_log_ret),
-                "predicted_direction": direction,
-                "created_at": datetime.now().isoformat()
+                "predicted_direction": direction
             }
-            
-            # Insert into Supabase
-            supabase.table(TABLE_NAME).insert(data).execute()
-            predictions_made += 1
-            logging.info(f"Predicted {ticker}: {pred_log_ret:.5f}")
-            
+            # Use upsert to avoid duplicate row errors if run multiple times
+            supabase.table(TABLE_PREDICTIONS).upsert(data, on_conflict="ticker,predicted_date").execute()
+            preds_made += 1
         except Exception as e:
-            logging.error(f"Failed to process {ticker}: {e}")
+            logging.error(f"Error predicting for {ticker}: {e}")
             
-    logging.info(f"Batch complete. Made {predictions_made} predictions.")
+    logging.info(f"Made {preds_made} predictions for {next_day_str}.")
+
+def run():
+    logging.info("--- Starting Daily Prediction Job ---")
+    run_evaluation()
+    run_training_and_prediction()
+    logging.info("--- Daily Job Complete ---")
 
 if __name__ == "__main__":
     run()

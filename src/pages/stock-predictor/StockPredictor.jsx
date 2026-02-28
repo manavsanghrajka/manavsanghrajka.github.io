@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { predictStock, formatTicker, getHistoricalAccuracy } from '../../lib/stockApi';
-import PredictionChart from './PredictionChart';
+import { predictStock, getHistoricalAccuracy } from '../../lib/stockApi';
 
 const MARKETS = [
   { value: 'NASDAQ', label: 'NASDAQ' },
@@ -11,7 +10,6 @@ const MARKETS = [
 const StockPredictor = () => {
   const [ticker, setTicker] = useState('');
   const [market, setMarket] = useState('NASDAQ');
-  const [targetDate, setTargetDate] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [result, setResult] = useState(null);
@@ -22,24 +20,13 @@ const StockPredictor = () => {
       setError('Please enter a ticker symbol');
       return;
     }
-    if (!targetDate) {
-      setError('Please select a target date');
-      return;
-    }
-
-    const today = new Date();
-    const target = new Date(targetDate);
-    if (target <= today) {
-      setError('Target date must be in the future');
-      return;
-    }
 
     setLoading(true);
     setError(null);
     setResult(null);
 
     try {
-      const prediction = await predictStock(ticker, market, targetDate);
+      const prediction = await predictStock(ticker, market);
       setResult(prediction);
       
       // Fetch accuracy stats
@@ -54,29 +41,19 @@ const StockPredictor = () => {
     }
   };
 
-  // Get min date (tomorrow)
-  const tomorrow = new Date();
-  tomorrow.setDate(tomorrow.getDate() + 1);
-  const minDate = tomorrow.toISOString().split('T')[0];
-
-  // Get max date (1 year from now)
-  const maxDate = new Date();
-  maxDate.setFullYear(maxDate.getFullYear() + 1);
-  const maxDateStr = maxDate.toISOString().split('T')[0];
-
   return (
     <main className="flex-grow flex flex-col items-center justify-start py-16 px-6">
       <h1 className="text-2xl md:text-3xl font-bold uppercase tracking-terminal text-center text-ink mb-4">
         [ STOCK PRICE PREDICTOR ]
       </h1>
       <p className="text-sm text-ink/70 text-center mb-8 max-w-xl">
-        Multiple Linear Regression model using technical indicators and macroeconomic data
+        Global Lasso Regression model using technical indicators and S&P 500 macroeconomic dynamics.
       </p>
 
       <div className="w-full max-w-2xl">
         {/* Input Form */}
         <div className="border border-structure p-6 mb-6">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
             {/* Ticker Input */}
             <div>
               <label className="block text-xs uppercase tracking-terminal text-ink/70 mb-2">
@@ -106,21 +83,6 @@ const StockPredictor = () => {
                 ))}
               </select>
             </div>
-
-            {/* Target Date */}
-            <div>
-              <label className="block text-xs uppercase tracking-terminal text-ink/70 mb-2">
-                TARGET DATE
-              </label>
-              <input
-                type="date"
-                value={targetDate}
-                onChange={(e) => setTargetDate(e.target.value)}
-                min={minDate}
-                max={maxDateStr}
-                className="w-full bg-canvas border border-structure p-3 text-sm font-mono"
-              />
-            </div>
           </div>
 
           {/* Predict Button */}
@@ -129,7 +91,7 @@ const StockPredictor = () => {
             disabled={loading}
             className="w-full bg-highlight text-invert p-4 text-sm uppercase tracking-terminal font-semibold hover:bg-ink transition-none disabled:opacity-50"
           >
-            {loading ? '[ ANALYZING... ]' : '[ PREDICT PRICE ]'}
+            {loading ? '[ ANALYZING... ]' : '[ PREDICT NEXT DAY CLOSE ]'}
           </button>
 
           {/* Error Message */}
@@ -142,14 +104,14 @@ const StockPredictor = () => {
 
         {/* Results */}
         {result && (
-          <div className="border border-structure p-6 mb-6">
+          <div className="border border-structure p-6 mb-6 animate-fade-in">
             <div className="flex justify-between items-start mb-4">
               <div>
                 <h2 className="text-xl font-bold uppercase tracking-terminal">
                   {result.ticker}
                 </h2>
               </div>
-              <span className="text-xs uppercase tracking-terminal text-ink/50">
+              <span className="text-xs uppercase tracking-terminal text-ink/50 block text-right mt-1">
                 {result.currency}
               </span>
             </div>
@@ -158,50 +120,23 @@ const StockPredictor = () => {
             <div className="grid grid-cols-2 gap-4 mb-6">
               <div className="border border-structure p-4">
                 <p className="text-xs uppercase tracking-terminal text-ink/70 mb-1">
-                  CURRENT PRICE
+                  CURRENT CLOSING PRICE
                 </p>
                 <p className="text-2xl font-bold">
-                  ${result.current_price.toFixed(2)}
+                  ${(result.current_price || 0).toFixed(2)}
                 </p>
               </div>
               <div className="border border-structure p-4 bg-highlight/10">
                 <p className="text-xs uppercase tracking-terminal text-ink/70 mb-1">
-                  PREDICTED ({result.days_ahead} DAYS)
+                  PREDICTED (NEXT DAY)
                 </p>
                 <p className="text-2xl font-bold">
-                  ${result.predicted_price.toFixed(2)}
+                  ${(result.predicted_price || 0).toFixed(2)}
                 </p>
-                <p className={`text-xs ${result.predicted_price >= result.current_price ? 'text-green-600' : 'text-red-600'}`}>
-                  {result.predicted_price >= result.current_price ? '▲' : '▼'} {' '}
-                  {(((result.predicted_price - result.current_price) / result.current_price) * 100).toFixed(2)}%
+                <p className={`text-xs font-bold ${result.direction === 'UP' ? 'text-green-600' : 'text-red-600'}`}>
+                  {result.direction === 'UP' ? '▲' : '▼'} {' '}
+                  {Math.abs(result.predicted_log_return * 100).toFixed(2)}% ({result.direction})
                 </p>
-              </div>
-            </div>
-
-            {/* Confidence Interval */}
-            <div className="border border-structure p-4 mb-6">
-              <p className="text-xs uppercase tracking-terminal text-ink/70 mb-2">
-                95% CONFIDENCE INTERVAL
-              </p>
-              <div className="flex justify-between items-center">
-                <span className="text-sm font-mono">${result.lower_bound.toFixed(2)}</span>
-                <div className="flex-1 mx-4 h-2 bg-structure relative">
-                  <div 
-                    className="absolute h-full bg-highlight"
-                    style={{
-                      left: '0%',
-                      width: '100%',
-                    }}
-                  />
-                  <div 
-                    className="absolute w-3 h-3 bg-ink rounded-full -top-0.5"
-                    style={{
-                      left: `${Math.max(0, Math.min(100, ((result.predicted_price - result.lower_bound) / (result.upper_bound - result.lower_bound)) * 100))}%`,
-                      transform: 'translateX(-50%)',
-                    }}
-                  />
-                </div>
-                <span className="text-sm font-mono">${result.upper_bound.toFixed(2)}</span>
               </div>
             </div>
 
@@ -209,7 +144,7 @@ const StockPredictor = () => {
             {accuracyStats && (
               <div className="border border-structure p-4 mb-6 bg-canvas">
                 <p className="text-xs uppercase tracking-terminal text-ink/70 mb-2">
-                  HISTORICAL ACCURACY ({accuracyStats.isGlobal ? 'GLOBAL' : accuracyStats.ticker})
+                  HISTORICAL ACCURACY ({accuracyStats.isGlobal ? 'GLOBAL TOP 50' : accuracyStats.ticker})
                 </p>
                 <div className="flex items-end justify-between">
                   <div>
@@ -217,71 +152,65 @@ const StockPredictor = () => {
                       {accuracyStats.accuracy.toFixed(1)}%
                     </span>
                     <span className="text-xs text-ink/50 ml-2 uppercase tracking-terminal">
-                      HIT RATE
+                      WIN RATE
                     </span>
                   </div>
                   <div className="text-right">
                     <p className="text-xs font-mono text-ink/70">
-                      {accuracyStats.correct} / {accuracyStats.total} CORRECT
+                      {accuracyStats.correct} / {accuracyStats.total} CORRECT PREDICTIONS
                     </p>
-                    {accuracyStats.isGlobal && (
-                      <p className="text-[10px] uppercase text-ink/40 mt-1">
-                        * Ticker not yet tracked individually
-                      </p>
-                    )}
                   </div>
                 </div>
               </div>
             )}
 
-
-            {/* Feature Importance */}
-            {result.feature_importance && (
+            {/* Feature Importance (Global Lasso Weights) */}
+            {result.feature_importance && Object.keys(result.feature_importance).length > 0 && (
               <div className="border border-structure p-4 mb-6">
                 <p className="text-xs uppercase tracking-terminal text-ink/70 mb-4">
-                  MODEL DRIVERS (FEATURE IMPORTANCE)
+                  ACTIVE GLOBAL VARIABLES (LASSO SHRINKAGE)
                 </p>
-                <div className="space-y-3">
+                <div className="space-y-4">
                   {Object.entries(result.feature_importance)
-                    .sort(([, a], [, b]) => b - a)
-                    .map(([feature, importance]) => (
-                      <div key={feature}>
-                        <div className="flex justify-between text-xs uppercase tracking-terminal mb-1">
-                          <span>{feature}</span>
-                          <span className="font-mono">{importance.toFixed(1)}%</span>
+                    .sort(([, a], [, b]) => Math.abs(b) - Math.abs(a)) // Sort by absolute weight magnitude
+                    .map(([feature, weight]) => {
+                      // Normalize the bar width relative to the max absolute weight
+                      const maxAbsWeight = Math.max(...Object.values(result.feature_importance).map(Math.abs));
+                      const relativeWidth = maxAbsWeight > 0 ? (Math.abs(weight) / maxAbsWeight) * 100 : 0;
+                      const isPositive = weight > 0;
+
+                      return (
+                        <div key={feature}>
+                          <div className="flex justify-between text-xs tracking-terminal mb-1">
+                            <span className="uppercase">{feature}</span>
+                            <span className={`font-mono ${isPositive ? 'text-green-600' : 'text-red-600'}`}>
+                              {weight > 0 ? '+' : ''}{weight.toFixed(5)}
+                            </span>
+                          </div>
+                          {/* Split center bar visualizer */}
+                          <div className="w-full h-1.5 bg-structure relative flex items-center">
+                             {/* Center Line */}
+                             <div className="absolute left-1/2 w-px h-3 bg-ink/30 z-10" />
+                             
+                             {/* Bar Fill */}
+                             {isPositive ? (
+                               <div 
+                                 className="h-full bg-green-500"
+                                 style={{ width: `${relativeWidth / 2}%`, marginLeft: '50%' }}
+                               />
+                             ) : (
+                               <div 
+                                 className="h-full bg-red-500 absolute"
+                                 style={{ width: `${relativeWidth / 2}%`, right: '50%' }}
+                               />
+                             )}
+                          </div>
                         </div>
-                        <div className="w-full h-2 bg-structure">
-                          <div
-                            className="h-full bg-ink"
-                            style={{ width: `${importance}%` }}
-                          />
-                        </div>
-                      </div>
-                    ))}
+                      );
+                    })}
                 </div>
               </div>
             )}
-
-            {/* Model Metrics */}
-            <div className="border-t border-dotted border-structure pt-4">
-              <p className="text-xs uppercase tracking-terminal text-ink/70 mb-3">
-                MODEL METRICS
-              </p>
-              <div className="grid grid-cols-3 gap-4 text-center">
-                <div>
-                  <p className="text-lg font-bold">{(result.r_squared * 100).toFixed(1)}%</p>
-                  <p className="text-xs text-ink/50">IN-SAMPLE FIT (R²)</p>
-                </div>
-                <div>
-                  <p className="text-lg font-bold">{(result.hit_rate * 100).toFixed(1)}%</p>
-                  <p className="text-xs text-ink/50">HIST. HIT RATE</p>
-                </div>
-                <div>
-                  <p className="text-lg font-bold">{result.volatility.toFixed(4)}</p>
-                  <p className="text-xs text-ink/50">DAILY VOL</p>
-                </div>
-              </div>
-            </div>
           </div>
         )}
 
