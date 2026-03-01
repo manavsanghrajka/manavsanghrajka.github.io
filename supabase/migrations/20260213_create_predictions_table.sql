@@ -16,4 +16,4 @@ create table if not exists predictions (
 -- Enable RLS
 alter table predictions enable row level security;
 create policy "Public read access" on predictions for select using (true);
-create policy "Service role write access" on predictions for insert, update using (true);
+create policy "Service role write access" on predictions for all using (true);

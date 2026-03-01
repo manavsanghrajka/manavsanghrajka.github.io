@@ -16,4 +16,4 @@ alter table model_weights enable row level security;
 create policy "Public read access" on model_weights for select using (true);
 
 -- Service role write access for the daily_job.py script
-create policy "Service role write access" on model_weights for insert, update using (true);
+create policy "Service role write access" on model_weights for all using (true);
