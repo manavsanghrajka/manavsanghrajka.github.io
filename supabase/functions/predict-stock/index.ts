@@ -28,7 +28,7 @@ serve(async (req: Request) => {
     const formattedTicker = formatTicker(ticker, market);
     
     // Call the new python-ml-service endpoint
-    const mlServiceUrl = `https://stock-predictor-ml-1jmf.onrender.com/predict-on-demand?ticker=${formattedTicker}`;
+    const mlServiceUrl = `https://manavsanghrajka-github-io.onrender.com/predict-on-demand?ticker=${formattedTicker}`;
     
     const mlResponse = await fetch(mlServiceUrl, {
       method: "GET",
