@@ -37,7 +37,7 @@ const TeamModal = ({ team, teamStats, teamYearStats, scoutingData, eventKey, onC
       onSave(saved);
       setIsEditing(false);
     } catch (err) {
-      setError('Failed to save data');
+      setError(`Failed to save data: ${err?.message || JSON.stringify(err)}`);
       console.error(err);
     } finally {
       setSaving(false);
