@@ -7,13 +7,3 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 export const SUPABASE_URL = supabaseUrl;
 export const SUPABASE_ANON_KEY = supabaseAnonKey;
 
-// TBA API configuration
-export const TBA_API_KEY = 'ifwf54WXFahVdJI8bNFaf0KXKECsenoanNoiWzfmNLyXUrUKPGajaUmKv074Wneb';
-export const TBA_BASE_URL = 'https://www.thebluealliance.com/api/v3';
-
-// Statbotics API configuration  
-export const STATBOTICS_BASE_URL = 'https://api.statbotics.io/v3';
-
-// Team number
-export const TEAM_NUMBER = 4308;
-export const TEAM_KEY = 'frc4308';
