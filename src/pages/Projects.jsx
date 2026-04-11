@@ -11,6 +11,21 @@ const Projects = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 max-w-3xl w-full">
 
 
+                <Link to="/song-searcher" className="group border border-structure p-8 hover:bg-ink hover:text-invert hover:border-ink transition-none flex flex-col items-start text-left">
+                  <span className="text-xs uppercase tracking-terminal text-ink/50 group-hover:text-invert/50 mb-2">
+                    [ APP ]
+                  </span>
+                  <h3 className="text-lg font-bold uppercase tracking-terminal mb-3 text-ink group-hover:text-invert">
+                    Song Searcher
+                  </h3>
+                  <p className="text-sm text-ink/70 group-hover:text-invert/70 leading-relaxed">
+                    Search a song and find similar ones
+                  </p>
+                  <span className="mt-4 text-sm font-semibold uppercase tracking-terminal text-ink group-hover:text-invert">
+                    [ OPEN → ]
+                  </span>
+                </Link>
+
                 <Link to="/are-you-compatible" className="group border border-structure p-8 hover:bg-ink hover:text-invert hover:border-ink transition-none flex flex-col items-start text-left">
                   <span className="text-xs uppercase tracking-terminal text-ink/50 group-hover:text-invert/50 mb-2">
                     [ QUIZ ]

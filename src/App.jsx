@@ -7,6 +7,7 @@ import Projects from './pages/Projects';
 import Cv from './pages/Cv';
 import DoTheyLikeMe from './pages/DoTheyLikeMe';
 import AreYouCompatible from './pages/AreYouCompatible';
+import SongSearcher from './pages/SongSearcher';
 
 function App() {
   return (
@@ -20,7 +21,7 @@ function App() {
             <Route path="/cv" element={<Cv />} />
             <Route path="/do-they-like-me" element={<DoTheyLikeMe />} />
             <Route path="/are-you-compatible" element={<AreYouCompatible />} />
-
+            <Route path="/song-searcher" element={<SongSearcher />} />
           </Routes>
           <Footer />
         </div>
