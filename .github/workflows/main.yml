@@ -26,6 +26,9 @@ jobs:
         run: npm run build
         env:
           VITE_FRED_API_KEY: ${{ secrets.VITE_FRED_API_KEY }}
+          VITE_CLIENT_ID: ${{ secrets.VITE_CLIENT_ID }}
+          VITE_CLIENT_SECRET: ${{ secrets.VITE_CLIENT_SECRET }}
+          VITE_LASTFM_API_KEY: ${{ secrets.VITE_LASTFM_API_KEY }}
       - name: Copy 404 fallback
         run: cp dist/index.html dist/404.html
       - name: Upload
