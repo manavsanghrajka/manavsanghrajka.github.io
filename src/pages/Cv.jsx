@@ -54,36 +54,46 @@ const Cv = () => {
                         <Item title="FRC 4308 Absolute Robotics" period="2023 - Present">
                             <div className="text-xs text-ink/70 space-y-2 mt-2">
                                 <div>
-                                    <p className="font-semibold text-ink/80">2023/2024 Season (Mechanical, Marketing)</p>
+                                    <p className="font-semibold text-ink/80">2023/2024 Season (Mechanical Subteam, Marketing Subteam)</p>
                                     <BulletList items={[
-                                        "2nd place in Overtime Sunday",
+                                        "2nd place at Overtime Sunday",
                                         "Alliance Captains at Humber Event",
                                         "Excellence in Engineering Award at Humber Event",
                                         "Qualified for District Championship"
                                     ]} />
                                 </div>
                                 <div>
-                                    <p className="font-semibold text-ink/80">2024/2025 Season (Admin Lead, Build Lead, Advanced Design, Drive Team, Marketing)</p>
+                                    <p className="font-semibold text-ink/80">2024/2025 Season (Admin Lead, Build Lead, Advanced Design, Drive Team, Marketing team)</p>
                                     <BulletList items={[
-                                        "1st place in Overtime Sunday",
+                                        "1st place at Overtime Sunday",
                                         "3rd place at Humber Event",
                                         "Alliance Captains at McMaster Event",
                                         "Qualified for District Championship"
                                     ]} />
                                 </div>
                                 <div>
-                                    <p className="font-semibold text-ink/80">2025/2026 Season (Awards Lead)</p>
+                                    <p className="font-semibold text-ink/80">2025/2026 Season (Awards Lead, Strategy Lead, Drive Team, Human Player, Impact Team)</p>
+                                    <BulletList items={[
+                                        "Alliance Captains at Overtime Sunday",
+                                        "Alliance Captains at McMaster Event",
+                                        "Engineering Inspiration Award at McMaster Event",
+                                        "Gracious Professional Award (4 awarded at event) McMaster Event",
+                                        "Winners at Waterloo Event",
+                                        "Qualified for District Championship",
+                                        "Gene Haas Foundation FIRST & SAE Competitions Award"
+                                    ]} />
                                 </div>
                             </div>
                         </Item>
 
-                        <Item title="The Woodlands DECA Chapter" period="2023 - Present">
+                        <Item title="The Woodlands DECA chapter" period="2023 - Present">
                             <div className="text-xs text-ink/70 space-y-2 mt-2">
                                 <div>
                                     <p className="font-semibold text-ink/80">2023/2024 (Principles in Marketing)</p>
                                     <BulletList items={[
                                         "Top 10 MC score (Regionals)",
                                         "Top 10 Overall (Regionals)",
+                                        "Provincial Qualification",
                                         "Top 20 MC score (Provincials)"
                                     ]} />
                                 </div>
@@ -99,41 +109,62 @@ const Cv = () => {
                             </div>
                         </Item>
 
-                        <Item title="The Woodlands HOSA Chapter" period="2025/2026">
-                            <BulletList items={["Medical Spelling"]} />
+                        <Item title="The Woodlands HOSA Chapter" period="2025 - Present">
+                            <div className="text-xs text-ink/70 space-y-2 mt-2">
+                                <div>
+                                    <p className="font-semibold text-ink/80">2025/2026 (Medical Spelling)</p>
+                                    <BulletList items={[
+                                        "26th Place (Round 1)",
+                                        "Round 2 Qualification"
+                                    ]} />
+                                </div>
+                                <div>
+                                    <p className="font-semibold text-ink/80">2026/2027 (Medical Spelling)</p>
+                                </div>
+                            </div>
                         </Item>
 
-                        <Item title="The Woodlands SACHSS" period="2025 - Present">
+                        <Item title="Relay for Life Woodlands" period="2025 - Present">
+                            <BulletList items={["Sponsorship Captain"]} />
+                        </Item>
+                        
+                        <Item title="Member of Aerospace Club" period="2024 - Present">
+                            <BulletList items={["VP of Administration"]} />
+                        </Item>
+
+                        <Item title="The Woodlands South Asian Canadian Health and Social Services (SACHSS)" period="2025 - Present">
                             <BulletList items={["VP of Operations"]} />
                         </Item>
 
                         <div className="text-xs text-ink/70 space-y-1 mb-4 pl-4">
                             <p>• Member of Medlife (2025 - present)</p>
                             <p>• Member of Computer Science Club (2023 - present)</p>
-                            <p>• Member of Aerospace Club (2024 - present)</p>
                             <p>• Member of the Debate Club (2023/2024)</p>
                         </div>
 
-                        <Item title="The Woodlands Varsity Swim Team" period="2024 - Present">
-                            <BulletList items={["ROPSAA Finalist 2024/2025 (100 IM and 400 Free Relay)"]} />
+                        <Item title="The Woodlands Varsity Swim Team" period="2024 - 2026">
+                            <BulletList items={[
+                                "ROPSAA Finalist 2024/2025 (100 IM and 400 Free Relay)",
+                                "ROPSAA Finalist 2025/2026 (200 Free Relay)"
+                            ]} />
                         </Item>
 
-                        <Item title="The Woodlands Pickleball Team" period="2024 - Present">
-                            <BulletList items={["1st Place at Inaugural Woodlands Pickleball Tournament (Junior Boys Doubles)"]} />
+                        <Item title="The Woodlands Pickleball Team" period="2024 - 2026">
+                            <BulletList items={["Winner at Inaugural Woodlands Pickleball Tournament (Junior Boys Doubles)"]} />
                         </Item>
 
                         <div className="text-xs text-ink/70 space-y-1 mb-4 pl-4">
-                            <p>• The Woodlands Cross Country Team (2025 - present)</p>
-                            <p>• Member of Archery Club (2023/2024)</p>
+                            <p>• The Woodlands Cross Country Team (2025/2026)</p>
+                            <p>• Member of Archery Team (2023/2024)</p>
                         </div>
                     </SubSection>
 
                     <SubSection title="Non-School">
-                        <Item title="Toronto Model UN">
+                        <Item title="Toronto Model UN (2026)">
                             <BulletList items={["Outreach Team"]} />
                         </Item>
 
-                        <Item title="2025 International Space Station Design Competition">
+                        <Item title="International Space Station Design Competition (2025)">
                             <BulletList items={[
                                 "Team Canada/Great Lakes",
                                 "Dougeldyne Aerospace - Good Samaritan Award"
@@ -154,8 +185,13 @@ const Cv = () => {
                             ]} />
                         </Item>
 
+                        <Item title="Youreka Canada High School Student Investigator (2025)">
+                            <BulletList items={[
+                                "Research on Prevalence of SNPs associated with long COVID susceptibility between hospitalized versus non-hospitalized COVID-19 cases"
+                            ]} />
+                        </Item>
+
                         <div className="text-xs text-ink/70 space-y-1 mb-4 pl-4">
-                            <p>• Youreka Canada Highschool Student Investigator (2025)</p>
                             <p>• JEC Council Member (2025)</p>
                             <p>• BioYouths - BioHistorian (2025)</p>
                             <p>• Leaf Machine Data Analysis - Data analyst (2025)</p>
@@ -173,7 +209,7 @@ const Cv = () => {
 
                 {/* Work Experience */}
                 <Section title="WORK EXPERIENCE">
-                    <Item title="City of Mississauga - Swimming Instructor / Lifeguard" period="Oct 2024 - Present" />
+                    <Item title="City of Mississauga - Swimming Instructor / Lifeguard" period="Oct 2024 - May 2026" />
                 </Section>
 
                 {/* Volunteering Experience */}
@@ -181,8 +217,9 @@ const Cv = () => {
                     <div className="text-xs text-ink/70 space-y-1 pl-4">
                         <p>• City of Mississauga - Assistant Swimming Instructor - 109 hrs</p>
                         <p>• Sai Dham Food Bank - 56 hrs</p>
+                        <p>• Pharmacy Assistant - 20 hrs</p>
+                        <p>• Mississauga Youth Action Committee - 19 hrs</p>
                         <p>• Volunteering Peel - 16 hrs</p>
-                        <p>• Mississauga Youth Action Committee General Member - 19 hrs</p>
                         <p>• DECA Woodlands - 16 hrs</p>
                         <p>• FIRST Robotics - 10 hrs</p>
                     </div>
