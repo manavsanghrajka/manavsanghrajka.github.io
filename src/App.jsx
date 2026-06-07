@@ -8,6 +8,8 @@ import Cv from './pages/Cv';
 import DoTheyLikeMe from './pages/DoTheyLikeMe';
 import AreYouCompatible from './pages/AreYouCompatible';
 import SongSearcher from './pages/SongSearcher';
+import BlueBanners from './pages/BlueBanners';
+import ZenSlicer from './pages/ZenSlicer';
 
 function App() {
   return (
@@ -22,6 +24,8 @@ function App() {
             <Route path="/do-they-like-me" element={<DoTheyLikeMe />} />
             <Route path="/are-you-compatible" element={<AreYouCompatible />} />
             <Route path="/song-searcher" element={<SongSearcher />} />
+            <Route path="/blue-banners" element={<BlueBanners />} />
+            <Route path="/zenslicer" element={<ZenSlicer />} />
           </Routes>
           <Footer />
         </div>
