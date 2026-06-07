@@ -1,0 +1,631 @@
+{
+  "generatedAt": "2026-04-28T16:45:30.350Z",
+  "label": "All-Time",
+  "year": null,
+  "totalTeams": 9163,
+  "teamsWithBanners": 2721,
+  "teamsWithoutBanners": 6442,
+  "maxBanners": 76,
+  "leaderboard": [
+    {
+      "banners": 72,
+      "teams": [
+        118
+      ],
+      "count": 1,
+      "percent": 0.010913456291607553
+    },
+    {
+      "banners": 70,
+      "teams": [
+        254
+      ],
+      "count": 1,
+      "percent": 0.010913456291607553
+    },
+    {
+      "banners": 69,
+      "teams": [
+        2056
+      ],
+      "count": 1,
+      "percent": 0.010913456291607553
+    },
+    {
+      "banners": 61,
+      "teams": [
+        359
+      ],
+      "count": 1,
+      "percent": 0.010913456291607553
+    },
+    {
+      "banners": 60,
+      "teams": [
+        1114
+      ],
+      "count": 1,
+      "percent": 0.010913456291607553
+    },
+    {
+      "banners": 58,
+      "teams": [
+        1678
+      ],
+      "count": 1,
+      "percent": 0.010913456291607553
+    },
+    {
+      "banners": 55,
+      "teams": [
+        67
+      ],
+      "count": 1,
+      "percent": 0.010913456291607553
+    },
+    {
+      "banners": 52,
+      "teams": [
+        33
+      ],
+      "count": 1,
+      "percent": 0.010913456291607553
+    },
+    {
+      "banners": 48,
+      "teams": [
+        27
+      ],
+      "count": 1,
+      "percent": 0.010913456291607553
+    },
+    {
+      "banners": 46,
+      "teams": [
+        195,
+        987
+      ],
+      "count": 2,
+      "percent": 0.021826912583215105
+    },
+    {
+      "banners": 44,
+      "teams": [
+        148
+      ],
+      "count": 1,
+      "percent": 0.010913456291607553
+    },
+    {
+      "banners": 42,
+      "teams": [
+        125
+      ],
+      "count": 1,
+      "percent": 0.010913456291607553
+    },
+    {
+      "banners": 40,
+      "teams": [
+        217,
+        2468
+      ],
+      "count": 2,
+      "percent": 0.021826912583215105
+    },
+    {
+      "banners": 38,
+      "teams": [
+        503,
+        2046
+      ],
+      "count": 2,
+      "percent": 0.021826912583215105
+    },
+    {
+      "banners": 37,
+      "teams": [
+        111,
+        2974
+      ],
+      "count": 2,
+      "percent": 0.021826912583215105
+    },
+    {
+      "banners": 36,
+      "teams": [
+        469
+      ],
+      "count": 1,
+      "percent": 0.010913456291607553
+    },
+    {
+      "banners": 35,
+      "teams": [
+        16
+      ],
+      "count": 1,
+      "percent": 0.010913456291607553
+    },
+    {
+      "banners": 33,
+      "teams": [
+        341
+      ],
+      "count": 1,
+      "percent": 0.010913456291607553
+    },
+    {
+      "banners": 31,
+      "teams": [
+        180,
+        330,
+        1676,
+        2337
+      ],
+      "count": 4,
+      "percent": 0.04365382516643021
+    },
+    {
+      "banners": 30,
+      "teams": [
+        234,
+        1629,
+        1718,
+        1796,
+        1983,
+        2590
+      ],
+      "count": 6,
+      "percent": 0.06548073774964532
+    },
+    {
+      "banners": 29,
+      "teams": [
+        233,
+        694,
+        1086,
+        1241,
+        1323
+      ],
+      "count": 5,
+      "percent": 0.05456728145803776
+    },
+    {
+      "banners": 28,
+      "teams": [
+        245,
+        604,
+        1023,
+        2767
+      ],
+      "count": 4,
+      "percent": 0.04365382516643021
+    },
+    {
+      "banners": 27,
+      "teams": [
+        71,
+        548,
+        1477,
+        2910,
+        4039
+      ],
+      "count": 5,
+      "percent": 0.05456728145803776
+    },
+    {
+      "banners": 26,
+      "teams": [
+        340,
+        1986
+      ],
+      "count": 2,
+      "percent": 0.021826912583215105
+    },
+    {
+      "banners": 25,
+      "teams": [
+        66,
+        177,
+        868,
+        973,
+        1218,
+        1305,
+        2122,
+        2481,
+        3538,
+        6328
+      ],
+      "count": 10,
+      "percent": 0.10913456291607553
+    }
+  ],
+  "distribution": [
+    {
+      "banners": 0,
+      "count": 6442,
+      "percent": 70.30448543053585
+    },
+    {
+      "banners": 1,
+      "count": 1190,
+      "percent": 12.987012987012985
+    },
+    {
+      "banners": 2,
+      "count": 468,
+      "percent": 5.107497544472334
+    },
+    {
+      "banners": 3,
+      "count": 240,
+      "percent": 2.6192295099858125
+    },
+    {
+      "banners": 4,
+      "count": 164,
+      "percent": 1.7898068318236384
+    },
+    {
+      "banners": 5,
+      "count": 121,
+      "percent": 1.3205282112845138
+    },
+    {
+      "banners": 6,
+      "count": 91,
+      "percent": 0.9931245225362872
+    },
+    {
+      "banners": 7,
+      "count": 74,
+      "percent": 0.807595765578959
+    },
+    {
+      "banners": 8,
+      "count": 44,
+      "percent": 0.4801920768307323
+    },
+    {
+      "banners": 9,
+      "count": 34,
+      "percent": 0.3710575139146568
+    },
+    {
+      "banners": 10,
+      "count": 35,
+      "percent": 0.38197097020626436
+    },
+    {
+      "banners": 11,
+      "count": 24,
+      "percent": 0.26192295099858126
+    },
+    {
+      "banners": 12,
+      "count": 25,
+      "percent": 0.2728364072901888
+    },
+    {
+      "banners": 13,
+      "count": 24,
+      "percent": 0.26192295099858126
+    },
+    {
+      "banners": 14,
+      "count": 23,
+      "percent": 0.2510094947069737
+    },
+    {
+      "banners": 15,
+      "count": 19,
+      "percent": 0.2073556695405435
+    },
+    {
+      "banners": 16,
+      "count": 11,
+      "percent": 0.12004801920768307
+    },
+    {
+      "banners": 17,
+      "count": 15,
+      "percent": 0.16370184437411328
+    },
+    {
+      "banners": 18,
+      "count": 9,
+      "percent": 0.09822110662446797
+    },
+    {
+      "banners": 19,
+      "count": 17,
+      "percent": 0.1855287569573284
+    },
+    {
+      "banners": 20,
+      "count": 11,
+      "percent": 0.12004801920768307
+    },
+    {
+      "banners": 21,
+      "count": 7,
+      "percent": 0.07639419404125286
+    },
+    {
+      "banners": 22,
+      "count": 5,
+      "percent": 0.05456728145803776
+    },
+    {
+      "banners": 23,
+      "count": 10,
+      "percent": 0.10913456291607553
+    },
+    {
+      "banners": 24,
+      "count": 5,
+      "percent": 0.05456728145803776
+    },
+    {
+      "banners": 25,
+      "count": 7,
+      "percent": 0.07639419404125286
+    },
+    {
+      "banners": 26,
+      "count": 3,
+      "percent": 0.03274036887482266
+    },
+    {
+      "banners": 27,
+      "count": 8,
+      "percent": 0.08730765033286042
+    },
+    {
+      "banners": 28,
+      "count": 2,
+      "percent": 0.021826912583215105
+    },
+    {
+      "banners": 29,
+      "count": 2,
+      "percent": 0.021826912583215105
+    },
+    {
+      "banners": 30,
+      "count": 2,
+      "percent": 0.021826912583215105
+    },
+    {
+      "banners": 31,
+      "count": 5,
+      "percent": 0.05456728145803776
+    },
+    {
+      "banners": 32,
+      "count": 2,
+      "percent": 0.021826912583215105
+    },
+    {
+      "banners": 33,
+      "count": 2,
+      "percent": 0.021826912583215105
+    },
+    {
+      "banners": 34,
+      "count": 1,
+      "percent": 0.010913456291607553
+    },
+    {
+      "banners": 35,
+      "count": 2,
+      "percent": 0.021826912583215105
+    },
+    {
+      "banners": 36,
+      "count": 1,
+      "percent": 0.010913456291607553
+    },
+    {
+      "banners": 37,
+      "count": 2,
+      "percent": 0.021826912583215105
+    },
+    {
+      "banners": 38,
+      "count": 1,
+      "percent": 0.010913456291607553
+    },
+    {
+      "banners": 39,
+      "count": 2,
+      "percent": 0.021826912583215105
+    },
+    {
+      "banners": 40,
+      "count": 2,
+      "percent": 0.021826912583215105
+    },
+    {
+      "banners": 41,
+      "count": 0,
+      "percent": 0
+    },
+    {
+      "banners": 42,
+      "count": 1,
+      "percent": 0.010913456291607553
+    },
+    {
+      "banners": 43,
+      "count": 0,
+      "percent": 0
+    },
+    {
+      "banners": 44,
+      "count": 0,
+      "percent": 0
+    },
+    {
+      "banners": 45,
+      "count": 0,
+      "percent": 0
+    },
+    {
+      "banners": 46,
+      "count": 0,
+      "percent": 0
+    },
+    {
+      "banners": 47,
+      "count": 0,
+      "percent": 0
+    },
+    {
+      "banners": 48,
+      "count": 1,
+      "percent": 0.010913456291607553
+    },
+    {
+      "banners": 49,
+      "count": 0,
+      "percent": 0
+    },
+    {
+      "banners": 50,
+      "count": 0,
+      "percent": 0
+    },
+    {
+      "banners": 51,
+      "count": 1,
+      "percent": 0.010913456291607553
+    },
+    {
+      "banners": 52,
+      "count": 0,
+      "percent": 0
+    },
+    {
+      "banners": 53,
+      "count": 1,
+      "percent": 0.010913456291607553
+    },
+    {
+      "banners": 54,
+      "count": 0,
+      "percent": 0
+    },
+    {
+      "banners": 55,
+      "count": 1,
+      "percent": 0.010913456291607553
+    },
+    {
+      "banners": 56,
+      "count": 0,
+      "percent": 0
+    },
+    {
+      "banners": 57,
+      "count": 0,
+      "percent": 0
+    },
+    {
+      "banners": 58,
+      "count": 1,
+      "percent": 0.010913456291607553
+    },
+    {
+      "banners": 59,
+      "count": 0,
+      "percent": 0
+    },
+    {
+      "banners": 60,
+      "count": 0,
+      "percent": 0
+    },
+    {
+      "banners": 61,
+      "count": 1,
+      "percent": 0.010913456291607553
+    },
+    {
+      "banners": 62,
+      "count": 0,
+      "percent": 0
+    },
+    {
+      "banners": 63,
+      "count": 0,
+      "percent": 0
+    },
+    {
+      "banners": 64,
+      "count": 0,
+      "percent": 0
+    },
+    {
+      "banners": 65,
+      "count": 0,
+      "percent": 0
+    },
+    {
+      "banners": 66,
+      "count": 0,
+      "percent": 0
+    },
+    {
+      "banners": 67,
+      "count": 2,
+      "percent": 0.021826912583215105
+    },
+    {
+      "banners": 68,
+      "count": 1,
+      "percent": 0.010913456291607553
+    },
+    {
+      "banners": 69,
+      "count": 0,
+      "percent": 0
+    },
+    {
+      "banners": 70,
+      "count": 0,
+      "percent": 0
+    },
+    {
+      "banners": 71,
+      "count": 0,
+      "percent": 0
+    },
+    {
+      "banners": 72,
+      "count": 0,
+      "percent": 0
+    },
+    {
+      "banners": 73,
+      "count": 0,
+      "percent": 0
+    },
+    {
+      "banners": 74,
+      "count": 0,
+      "percent": 0
+    },
+    {
+      "banners": 75,
+      "count": 0,
+      "percent": 0
+    },
+    {
+      "banners": 76,
+      "count": 1,
+      "percent": 0.010913456291607553
+    }
+  ]
+}
