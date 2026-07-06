@@ -10,12 +10,12 @@ const Header = () => {
     return (
       <Link 
         to={to} 
-        className={`text-ink uppercase tracking-terminal font-semibold hover:bg-highlight hover:text-invert px-3 py-1 transition-none whitespace-nowrap ${
+        className={`text-ink uppercase tracking-terminal font-semibold hover:bg-highlight hover:text-invert px-3 py-1 transition-none flex items-center ${
           isActive ? 'bg-highlight text-invert' : ''
         }`}
       >
         {/* Show brackets only on desktop */}
-        <span className="hidden sm:inline">{isActive ? '[*] ' : '[ ] '}</span>
+        <span className="hidden sm:inline">{isActive ? '[*]\u00A0' : '[\u00A0]\u00A0'}</span>
         {label}
       </Link>
     );
@@ -24,8 +24,8 @@ const Header = () => {
   return (
     <header className="bg-canvas border-b border-dotted border-structure sticky top-0 z-50">
       <div className="container mx-auto flex flex-wrap justify-between items-center py-4 px-4 sm:px-6 gap-y-4">
-        <Link to="/" className="text-ink font-semibold uppercase tracking-terminal text-sm hover:bg-highlight hover:text-invert px-2 py-1 transition-none whitespace-nowrap">
-          [ MANAV.IO ]
+        <Link to="/" className="text-ink font-semibold uppercase tracking-terminal text-sm hover:bg-highlight hover:text-invert px-2 py-1 transition-none">
+          [&nbsp;MANAV.IO&nbsp;]
         </Link>
         <div className="flex items-center space-x-2 sm:space-x-6">
           <nav className="flex space-x-2 sm:space-x-6 text-sm">
@@ -35,10 +35,10 @@ const Header = () => {
           </nav>
           <button
             onClick={toggleTheme}
-            className="text-ink uppercase tracking-terminal font-semibold text-sm border border-structure px-2 sm:px-3 py-1 hover:bg-highlight hover:text-invert hover:border-highlight transition-none whitespace-nowrap"
+            className="text-ink uppercase tracking-terminal font-semibold text-sm border border-structure px-2 sm:px-3 py-1 hover:bg-highlight hover:text-invert hover:border-highlight transition-none flex items-center"
             aria-label="Toggle theme"
           >
-            <span className="hidden sm:inline">{isDark ? '[ ☀ LIGHT ]' : '[ ☾ DARK ]'}</span>
+            <span className="hidden sm:inline">{isDark ? '[\u00A0☀\u00A0LIGHT\u00A0]' : '[\u00A0☾\u00A0DARK\u00A0]'}</span>
             <span className="sm:hidden">{isDark ? '☀' : '☾'}</span>
           </button>
         </div>

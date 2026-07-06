@@ -12,8 +12,8 @@ const Home = () => {
       </p>
 
       <Link to="/projects"
-        className="bg-highlight text-invert px-8 py-4 font-semibold uppercase tracking-terminal hover:bg-ink hover:text-invert border border-highlight transition-none">
-        [ EXPLORE PROJECTS → ]
+        className="bg-highlight text-invert px-8 py-4 font-semibold uppercase tracking-terminal hover:bg-ink hover:text-invert border border-highlight transition-none flex items-center justify-center">
+        [&nbsp;EXPLORE&nbsp;PROJECTS&nbsp;→&nbsp;]
       </Link>
     </main>
   );
