@@ -3,7 +3,7 @@ import React from 'react';
 const Footer = () => {
   return (
     <footer className="bg-canvas border-t border-dotted border-structure py-10 mt-20 text-center">
-      <div className="flex justify-center flex-wrap gap-4 mb-6 text-sm font-semibold uppercase tracking-terminal px-4">
+      <div className="flex justify-center flex-nowrap gap-[1vw] sm:gap-4 mb-6 text-[2.5vw] sm:text-sm font-semibold uppercase tracking-terminal px-1 sm:px-4 w-full">
         <a href="https://instagram.com/manav.2009" target="_blank" rel="noopener noreferrer" className="text-ink hover:bg-ink hover:text-invert px-2 py-1 transition-none flex items-center">
           [&nbsp;INSTAGRAM&nbsp;]
         </a>
@@ -21,7 +21,7 @@ const Footer = () => {
         </a>
       </div>
 
-      <p className="text-ink/50 text-xs tracking-terminal uppercase">
+      <p className="text-ink/50 text-[2vw] sm:text-xs tracking-terminal uppercase">
         © 2026 MANAV | BUILT WITH REACT + VITE
       </p>
     </footer>
