@@ -37,7 +37,6 @@ const PasswordLock = ({ children }) => {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center font-mono bg-canvas text-ink p-4">
       <form onSubmit={handleSubmit} className="flex flex-col items-center gap-4 w-full max-w-sm">
-        <h1 className="text-2xl font-bold mb-4">Restricted Access</h1>
         <div className="flex flex-col w-full gap-2 text-center">
           <input
             type="password"
