@@ -3,23 +3,17 @@ import { Link } from 'react-router-dom';
 const Home = () => {
   return (
     <main className="flex-grow flex flex-col items-center justify-center text-center px-6 py-16">
-      <p className="text-xs uppercase tracking-terminal text-ink/50 mb-4">
-        [ GRADE 12 PHYSICS ]
-      </p>
-
       <h1 className="text-2xl md:text-3xl font-bold text-ink uppercase tracking-terminal mb-6">
-        PASSION PROJECT
+        WELCOME TO MY WEBSITE
       </h1>
 
-      <div className="border-t border-dotted border-structure w-24 mb-8"></div>
-
-      <p className="text-sm md:text-base text-ink/70 max-w-2xl mb-4 leading-relaxed">
-        Exploring the physics behind three personal passions — film photography, tuned mass dampers, and trebuchets.
+      <p className="text-sm md:text-base text-ink/70 max-w-2xl mb-10 leading-relaxed">
+        I like making random things
       </p>
 
-      <Link to="/blog"
+      <Link to="/projects"
         className="bg-highlight text-invert px-8 py-4 font-semibold uppercase tracking-terminal hover:bg-ink hover:text-invert border border-highlight transition-none flex items-center justify-center">
-        [&nbsp;READ&nbsp;THE&nbsp;BLOG&nbsp;→&nbsp;]
+        [&nbsp;EXPLORE&nbsp;PROJECTS&nbsp;→&nbsp;]
       </Link>
     </main>
   );

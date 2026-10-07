@@ -30,8 +30,7 @@ const Header = () => {
         <div className="flex items-center space-x-1 sm:space-x-6">
           <nav className="flex space-x-1 sm:space-x-6 text-[10px] sm:text-sm">
             <NavItem to="/" label="HOME" />
-            <NavItem to="/projects" label="PROJECTS" />
-            <NavItem to="/cv" label="CV" />
+            <NavItem to="/blog" label="BLOG" />
           </nav>
           <button
             onClick={toggleTheme}
