@@ -4,6 +4,7 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import Home from './pages/Home';
 import Blog from './pages/Blog';
+import DrivingQuestions from './pages/DrivingQuestions';
 
 // Archived pages
 import Projects from './archive/Projects';
@@ -24,6 +25,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/blog" element={<Blog />} />
+            <Route path="/driving-questions" element={<DrivingQuestions />} />
             {/* Archived routes */}
             <Route path="/projects" element={<Projects />} />
             <Route path="/cv" element={<Cv />} />
