@@ -15,9 +15,9 @@ const projects = [
       {
         initial: 'Why do butterflies fly?',
         critique:
-          'Too vague and leans heavily into biology rather than physical and mechanical investigation.',
+          'Too vague and looks into biology rather than physics.',
         revised:
-          'How do the fluid dynamics, kinematics, and aspect ratio of butterfly wings generate aerodynamic lift and thrust during flight?',
+          'How do the physical and structural properties of butterfly wings generate aerodynamic lift and thrust during flight?',
       },
       {
         initial: 'Can we build a robot butterfly?',
@@ -29,7 +29,7 @@ const projects = [
       {
         initial: 'How do drones help the environment?',
         critique:
-          'Completely unrelated to the specific mechanics of the project; far too broad.',
+          'Completely unrelated to the point of the project; far too broad.',
         revised:
           'How can biomimetic flapping-wing micro-air vehicles (MAVs) reduce noise pollution and ecological disturbance compared to traditional rotor-based drones in environmental monitoring?',
       },
@@ -42,14 +42,14 @@ const projects = [
       {
         initial: 'How does a trebuchet work?',
         critique:
-          'Too broad and textbook-based; can easily be answered via a quick web search without experimentation.',
+          'Too broad and can easily be answered with a google search without experimentation.',
         revised:
-          'How do the counterweight mass and sling-to-arm ratio affect the conservation of gravitational potential energy into kinetic energy during a trebuchet launch?',
+          'How do the counterweight mass and sling-to-arm ratio affect the conversion of gravitational potential energy into kinetic energy during a trebuchet launch?',
       },
       {
         initial: 'How do you make a trebuchet accurate?',
         critique:
-          'Lacks specific measurement parameters, variables, and scientific depth.',
+          'Lacks specific measurement parameters and variables.',
         revised:
           'How do variations in the projectile release angle and initial velocity influence the horizontal range and landing precision of a trebuchet?',
       },
@@ -58,7 +58,7 @@ const projects = [
         critique:
           'Too simple (operational query), lacking a core physics investigation.',
         revised:
-          'How can an electronic microcontroller and sensor feedback loop dynamically adjust the launch parameters to compensate for target distance and environmental resistance?',
+          'How can an electronic microcontroller and sensor feedback loop dynamically adjust the launch parameters to compensate for target distance?',
       },
       {
         initial: 'Why were trebuchets used in history?',
