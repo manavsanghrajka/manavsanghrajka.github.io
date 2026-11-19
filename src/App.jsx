@@ -5,6 +5,7 @@ import Footer from './components/Footer';
 import Home from './pages/Home';
 import Blog from './pages/Blog';
 import DrivingQuestions from './pages/DrivingQuestions';
+import Timeline from './pages/Timeline';
 
 // Archived pages
 import Projects from './archive/Projects';
@@ -26,6 +27,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/blog" element={<Blog />} />
             <Route path="/driving-questions" element={<DrivingQuestions />} />
+            <Route path="/timeline" element={<Timeline />} />
             {/* Archived routes */}
             <Route path="/projects" element={<Projects />} />
             <Route path="/cv" element={<Cv />} />

@@ -32,6 +32,7 @@ const Header = () => {
             <NavItem to="/" label="HOME" />
             <NavItem to="/blog" label="BLOG" />
             <NavItem to="/driving-questions" label="DQ" />
+            <NavItem to="/timeline" label="TIMELINE" />
           </nav>
           <button
             onClick={toggleTheme}
