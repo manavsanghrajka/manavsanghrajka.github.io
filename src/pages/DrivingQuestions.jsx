@@ -73,7 +73,7 @@ const projects = [
     id: 3,
     title: 'A Coil Gun',
     finalDrivingQuestion:
-      'How can we optimize the electrical-to-kinetic energy conversion in a coil gun by balancing the magnetic properties of different projectile materials with the total number of acceleration coils?',
+      "How can we maximize the energy efficiency and kinetic output of a coil gun by optimizing the balance between the projectile's magnetic material and the total number of acceleration coils?",
     questions: [
       {
         initial: 'What is a coil gun?',
@@ -258,7 +258,7 @@ const DrivingQuestions = () => {
           </div>
           <div className="border-t border-dotted border-structure mb-4"></div>
           <p className="text-base md:text-lg font-bold text-ink leading-relaxed">
-            How can we optimize the electrical-to-kinetic energy conversion in a coil gun by balancing the magnetic properties of different projectile materials with the total number of acceleration coils?
+            How can we maximize the energy efficiency and kinetic output of a coil gun by optimizing the balance between the projectile's magnetic material and the total number of acceleration coils?
           </p>
         </section>
       </div>
