@@ -72,6 +72,8 @@ const projects = [
   {
     id: 3,
     title: 'A Coil Gun',
+    finalDrivingQuestion:
+      'How can we optimize the electrical-to-kinetic energy conversion in a coil gun by balancing the magnetic properties of different projectile materials with the total number of acceleration coils?',
     questions: [
       {
         initial: 'What is a coil gun?',
@@ -114,6 +116,10 @@ const DrivingQuestions = () => {
 
   return (
     <main className="flex-grow flex flex-col items-center justify-start py-16 px-6">
+      <p className="text-xs uppercase tracking-terminal text-ink/50 mb-3 text-center">
+        [ OCTOBER 20TH, 2026 ]
+      </p>
+
       <h1 className="text-2xl md:text-3xl font-bold text-ink uppercase tracking-terminal mb-12 text-center">
         [ DRIVING QUESTIONS ]
       </h1>
@@ -223,10 +229,38 @@ const DrivingQuestions = () => {
                     </div>
                   ))}
                 </div>
+
+                {/* Project Final Driving Question (if set) */}
+                {project.finalDrivingQuestion && (
+                  <div className="p-6 border-t border-dotted border-structure bg-ink/[0.02]">
+                    <span className="text-xs uppercase tracking-terminal text-ink/50 block mb-2 font-semibold">
+                      [ FINAL DRIVING QUESTION ]
+                    </span>
+                    <p className="text-sm md:text-base font-bold text-ink leading-relaxed">
+                      {project.finalDrivingQuestion}
+                    </p>
+                  </div>
+                )}
               </div>
             )}
           </article>
         ))}
+
+        {/* Final Driving Question Section */}
+        <section className="border border-structure bg-canvas p-6 md:p-8">
+          <div className="flex items-center justify-between gap-3 mb-3">
+            <span className="text-xs uppercase tracking-terminal text-ink/50 font-semibold">
+              [ FINAL DRIVING QUESTION ]
+            </span>
+            <span className="text-xs uppercase tracking-terminal text-ink/50">
+              [ PROJECT 3 : A COIL GUN ]
+            </span>
+          </div>
+          <div className="border-t border-dotted border-structure mb-4"></div>
+          <p className="text-base md:text-lg font-bold text-ink leading-relaxed">
+            How can we optimize the electrical-to-kinetic energy conversion in a coil gun by balancing the magnetic properties of different projectile materials with the total number of acceleration coils?
+          </p>
+        </section>
       </div>
     </main>
   );
